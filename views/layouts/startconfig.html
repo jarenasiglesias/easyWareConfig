@@ -26,7 +26,7 @@
                     </div>
                 </li>
             </ul>
-            <button type="button" class="btn" data-toggle="modal" data-target="#exampleModal">
+            <button type="button" class="btn" id="login" data-toggle="modal" data-target="#exampleModal">
             Login
             </button>
         </div>
@@ -35,23 +35,22 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="col-2 "></div>
-            <div class="col-8" id="content">
+            <div class="col-md-12" id="content">
                 <h2 id="content-title">Configura tu pc de forma sencilla y guiada</h2>
                 <hr>
                 <div class="container">
                     <div class="row justify-content-center" id="text-area">
-                    
+                        <p>Bienvenido a nuestro asistente, te recomendamos que leas las instrucciones que te damos atentamente, antes de darle a seguir, o seleccionar un componente.</p>
                     </div>
                     <table class="table table-bordered table-inverse tablesorter" id="table-area" hidden>
                         
                     </table>
                     <div class="row justify-content-center">
-                        <div class="col-md-5"></div>
-                        <div class="col-md-2" id="btn-area">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-3" id="btn-area">
                             <button class="btn" id="btn-start" class="">¡Comenzar!</button>
                         </div>
-                        <div class="col-md-5"></div>
+                        <div class="col-md-1"></div>
                     </div>
                 </div>
                 <div id="icons-row">
@@ -62,8 +61,7 @@
                     <img src="/images/hdd.png">
                 </div>
             </div>
-            <div class="col-2"></div>
-        </div>
+            
     </div>
 {% endblock %}
 
