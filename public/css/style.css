@@ -12,7 +12,7 @@
 #content{
 	background-image: url('/images/bgcontent.png');
 	margin-top: 30px;
-	margin-bottom: 20px;
+	margin-bottom: 60px;
 	border-radius: 10px;
 	width: 100%;
 }
@@ -48,7 +48,7 @@
 
 #table-area>*{	
 	font-family: 'Roboto Mono', monospace;
-	font-size: 15px;
+	font-size: 14px;
 }
 
 #btn-start:hover{
@@ -69,12 +69,20 @@
 	background-color: #FFF;
 }
 
+#cpu-freq:after{
+	content: "GHz";
+}
+
 #watts:after{
 	content: "W";
 }
 
 #eur:after{
 	content: "€";
+}
+
+#gpu-mem-clock:after, #mem-boost:after{
+	content: "MHz";
 }
 
 #text-area>p{
@@ -110,7 +118,6 @@ footer{
 	background-color: #000;
 	color:#FFF;
     width: 100%;
-	height: 40px;
     position:relative;
     z-index: 823452374574;
 }

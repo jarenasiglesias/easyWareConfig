@@ -165,7 +165,7 @@ cpu.save(function(err) {
 });
 */
 
-//GET
+//CPU
 app.get('/cpu', function(req, res) {
     console.log("Todos los cpu")
     CpuModel.find(function(err, p) {
@@ -195,7 +195,7 @@ app.get('/cpu/amd', function(req, res) {
         res.json(p);
     });
 });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los gpu
 app.get('/gpu', function(req, res) {
     console.log("Todos los gpu")
@@ -205,11 +205,11 @@ app.get('/gpu', function(req, res) {
     });
 })
 
-//busca sólo los gpu de marca intel
-app.get('/gpu/intel', function(req, res) {
-    console.log("gpu intel")
+//busca sólo los gpu de marca Nvidia
+app.get('/gpu/nvidia', function(req, res) {
+    console.log("gpu Nvidia")
     GpuModel.find({
-        "brand": 'Intel'
+        "brand": 'NVIDIA'
     }, function(err, p) {
         if (err) return console.error(err);
         res.json(p);
@@ -226,7 +226,7 @@ app.get('/gpu/amd', function(req, res) {
         res.json(p);
     });
 });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los case
 app.get('/case', function(req, res) {
     console.log("Todos los cases")
@@ -235,7 +235,7 @@ app.get('/case', function(req, res) {
         res.json(p);
     });
 })
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todas las mobo
 app.get('/motherboard', function(req, res) {
     console.log("Todos los mobo")
@@ -314,7 +314,7 @@ app.get('/motherboard/fm2+', function(req, res) {
         res.json(p);
     });
 });
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todas la psu
 app.get('/psu', function(req, res) {
     console.log("Todos los psu")
@@ -323,7 +323,7 @@ app.get('/psu', function(req, res) {
         res.json(p);
     });
 })
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todas las rams
 app.get('/ram', function(req, res) {
     console.log("Todos las rams")
@@ -332,7 +332,7 @@ app.get('/ram', function(req, res) {
         res.json(p);
     });
 })
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los hdd
 app.get('/storage', function(req, res) {
     console.log("Todos los hdd")
