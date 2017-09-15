@@ -1,0 +1,116 @@
+#nav-logo{
+	border-radius: 10px;
+	border: 2px solid;
+	border-color: #747474;
+}
+
+#nav-logo:hover{
+	border-color: #FFF;
+	opacity: 0.5;
+}
+
+#content{
+	background-image: url('/images/bgcontent.png');
+	margin-top: 30px;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	width: 100%;
+}
+
+#content>h2{
+	margin-top: 40px;
+	margin-right: 20px;
+	margin-left: 20px;
+	font-size: 50px;
+	font-weight: bold;
+	text-align: center;
+	font-family: 'Indie Flower';
+}
+
+#table-area>thead{
+	cursor: pointer;
+	background: rgba(0, 0, 0, .2);
+}
+
+#table-area>thead>tr>th:hover{
+	cursor: pointer;
+	color:#838181;
+	transition: inherit;
+	transition-duration: 0.5s;
+}
+
+#table-area>tbody>tr>td:hover{
+	cursor: pointer;
+	color:#838181;
+	transition: inherit;
+	transition-duration: 0.5s;
+}
+
+#table-area>*{	
+	font-family: 'Roboto Mono', monospace;
+	font-size: 15px;
+}
+
+#btn-start:hover{
+	border: 1px solid;
+	border-color: #83D4FE;
+	background-color: #FFF;
+	opacity: 1 !Important;
+}
+
+.btn{
+	margin-top: 5px;
+	margin-bottom: 5px;
+	border: 1px solid;
+}
+
+.btn:hover{
+	border-color: #83D4FE;
+	background-color: #FFF;
+}
+
+#watts:after{
+	content: "W";
+}
+
+#eur:after{
+	content: "€";
+}
+
+#text-area>p{
+	font-family: 'Roboto Mono', monospace;
+	font-size: 15px;
+	margin-right: 20px;
+	margin-left: 20px;
+	margin-bottom: 50px;
+}
+
+#icons-row{
+	margin-top: 100px;
+	text-align: center;
+	margin-bottom: 50px;
+}
+
+#icons-row>img{
+	margin-right: 10px;
+	margin-left: 10px;
+}
+
+.font{
+	background-image: url('/images/background.png');
+}
+
+.navbar{
+	height: 80px;
+}
+
+footer{
+	text-align:center;
+	font-size: 16px;
+	background-color: #000;
+	color:#FFF;
+    width: 100%;
+	height: 40px;
+    position:relative;
+    z-index: 823452374574;
+}

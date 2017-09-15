@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+	<head>
+		<title>{% block title %}Home{% endblock %}</title>
+		<meta charset="utf-8" />
+		<meta name="hardconfig" content="width=device-width, initial-scale=1, user-scalable=no" />
+		{% block css%}	
+			{% include "includes/css.html" %}
+		{% endblock %}
+
+		{% block js %}
+			{% include "includes/js.html" %}
+		{% endblock %}
+    </head>
+	<body class="font">
+		{% block modal %}
+			{% include "includes/modal.html" %}
+		{% endblock %}
+
+		{% block navbar %}{% endblock %}
+		{% block content %}{% endblock %}
+
+		{% block footer %}
+			{% include "includes/footer.html" %}
+		{% endblock %}
+
+		{% block jsApp %}{% endblock %}
+	</body>
+</html>
