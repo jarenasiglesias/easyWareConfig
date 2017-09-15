@@ -119,7 +119,7 @@ var ramSchema = mongoose.Schema({
 });
 
 //Schema de hdd
-var storageSchema = mongoose.Schema({
+var hddSchema = mongoose.Schema({
     name: String,
     series: String,
     form: String,
@@ -136,7 +136,7 @@ var GpuModel = mongoose.model('gpu', gpuSchema, 'gpu');
 var MoboModel = mongoose.model('motherboard', moboSchema, 'motherboard');
 var PsuModel = mongoose.model('psu', psuSchema, 'psu');
 var RamModel = mongoose.model('rams',ramSchema, 'rams');
-var StorageModel = mongoose.model('storage',storageSchema,'storage');
+var HddModel = mongoose.model('hdd',hddSchema,'hdd');
 
 /*
 
@@ -332,11 +332,32 @@ app.get('/ram', function(req, res) {
         res.json(p);
     });
 })
+
+app.get('/ram/ddr3', function(req, res) {
+    console.log("Ram DDR3")
+    RamModel.find({
+        "type": "DDR3"
+    }, function(err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+app.get('/ram/ddr4', function(req, res) {
+    console.log("Ram DDR3")
+    RamModel.find({
+        "type": "DDR4"
+    }, function(err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los hdd
-app.get('/storage', function(req, res) {
+app.get('/hdd', function(req, res) {
     console.log("Todos los hdd")
-    StorageModel.find(function(err, p) {
+    HddModel.find(function(err, p) {
         if (err) return console.error(err);
         res.json(p);
     });

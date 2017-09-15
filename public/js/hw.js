@@ -1,11 +1,13 @@
 var cpuStore = [];
 var moboStore = [];
 var gpuStore = [];
+var ramStore = [];
+var hddStore = [];
+var psuStore = [];
 
 $("#btn-start").on("click", firstInstructions);
 
 function createButton(value, component) {
-    console.log(component);
     var btnArea = $('#btn-area');
     var btn = $('<button>' + value + '</button>');
     btn.attr('class', 'btn');
@@ -21,7 +23,6 @@ function createButton(value, component) {
         var nvidia = btn.attr('brand', 'Nvidia');
         nvidia.on("click", function () { printComponents(component, value) })
     }
-
 
     btn.on("click", selector);
     btnArea.append(btn);
@@ -50,13 +51,22 @@ function selector() {
     var compAttr = $(this).attr('component');
 
     if (compAttr !== 'CPU' && compAttr !== 'GPU') { //entra aquí si no es ni GPU ni CPU
+        var socketType = cpuStore[1].replace('+', '');
 
         if (compAttr === 'motherboard') { //sólo entra aquí si el componente es una motherboard
-            printComponents(compAttr, cpuStore[1].replace('+', ''));
+            printComponents(compAttr, socketType);
+
+        } else if (compAttr === 'RAM') { //sólo entra aquí si el componente es una ram
+            if (cpuStore[1] === 'FM2+' || cpuStore[1] === 'AM3+' || cpuStore[1] === '1150') { //sólo si se cumple alguno de estos sockets la memoria será DDR4, si no será DDR3
+                printComponents(compAttr, 'ddr3');
+            } else {
+                printComponents(compAttr, 'ddr4');
+            }
+        } else {
+            printComponents(compAttr, '');
         }
 
     } else if (compAttr !== 'CPU' || compAttr !== 'GPU') { //entra aquí si es GPU o CPU
-
         $.get('http://localhost:3000/' + compAttr, function getType(response) {
             var cpuObj = response;
             var addedBrands = []; //crea variable con array para almacenar cuantas marcas de cpu existen en la base de datos
@@ -83,8 +93,6 @@ function printComponents(component, brand) {
     var textArea = $('#text-area');
     textArea.empty();
 
-    //createBackButton(cont);
-
     var tableArea = $('#table-area');
     tableArea.empty();
 
@@ -98,18 +106,25 @@ function printComponents(component, brand) {
 
 function tableHeadBuilder(tableArea, component, tableComponentBody) {
     var optColum;
-
+    var optColum2 = 'Consumo';
     if (component === 'CPU') {
         optColum = '<th> Socket ▼ </th>' + '<th> Núcleos ▼ </th>' + '<th> Hilos ▼ </th>' + '<th> Frec ▼ </th>';
     } else if (component === 'motherboard') {
         optColum = '<th> Socket ▼ </th>';
     } else if (component === 'GPU') {
         optColum = '<th> Frec GPU ▼ </th>' + '<th> GPU Turbo ▼ </th>' + '<th> Memoria ▼ </th>' + '<th> Frec Mem ▼ </th>' + '<th> Mem Turbo ▼ </th>';
+    } else if (component === 'RAM') {
+        optColum = '<th> Tipo ▼ </th>' + '<th> Frec ▼ </th>' + '<th> Módulos ▼ </th>' + '<th> Memoria ▼ </th>';
+    } else if (component === 'HDD') {
+        optColum = '<th> Memoria ▼ </th>' + '<th> Caché ▼ </th>' + '<th> Velocidad ▼ </th>';
+    } else if (component === 'PSU') {
+        optColum2 = 'Capacidad';
+        optColum = '<th> Eficiencia ▼ </th>';
     } else {
-        optColum = '';
+        optColum2 = 'Tamaño de caja';
     }
 
-    var headRow = $('<thead><tr><th> Nombre ▼ </th>' + optColum + '<th> Consumo ▼ </th><th> Precio ▼ </th></tr></thead>');
+    var headRow = $('<thead><tr><th> Nombre ▼ </th>' + optColum + '<th>' + optColum2 + '▼ </th><th> Precio ▼ </th></tr></thead>');
     tableArea.append(headRow);
 }
 
@@ -117,21 +132,14 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
     $.get('http://localhost:3000/' + component + '/' + brand, function getType(response) {
         var compObj = response;
 
-        console.log(response);
-
         for (var i = 0; i < compObj.length; i++) {
             tableArea.removeAttr('hidden');
 
-            var name;
+            var name = compObj[i].name;;
             var tdp = compObj[i].tdp;
             var price = '<b>' + compObj[i].price + '</b>';
             var optProp; //propiedad que varía según el componente
-
-            if (component === 'CPU') {
-                name = compObj[i].model;
-            } else {
-                name = compObj[i].name;
-            };
+            var optProp2 = '<td id="watts">' + tdp + '</td>'; //inicializamos éste que se va a repetir excepto en case
 
             if (component === 'CPU') {
                 var socket = compObj[i].socket;
@@ -145,15 +153,31 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
             } else if (component === 'GPU') {
                 var gpuClock = compObj[i].gpu_clock;
                 var gpuBoost = compObj[i].gpu_boost;
-                var memClock = compObj[i].mem_clock;
-                var memBoost = compObj[i].mem_boost;
+                var gpuMemClock = compObj[i].mem_clock;
+                var gpuMemBoost = compObj[i].mem_boost;
                 var gpuMemory = compObj[i].mem_size + compObj[i].mem_type;
-                optProp = '<td id="gpu-clock">' + gpuClock + '</td>' + '<td id="gpu-boost">' + gpuBoost + '</td>' + '<td id="gpu-mem">' + gpuMemory + '</td>' + '<td id="gpu-mem-clock">' + memClock + '</td>' + '<td id="mem-boost">' + memBoost + '</td>';
-            } else {
-                optProp = '';
+                optProp = '<td id="gpu-clock">' + gpuClock + '</td>' + '<td id="gpu-boost">' + gpuBoost + '</td>' + '<td id="gpu-mem">' + gpuMemory + '</td>' + '<td id="gpu-mem-clock">' + gpuMemClock + '</td>' + '<td id="mem-boost">' + gpuMemBoost + '</td>';
+            } else if (component === 'RAM') {
+                var memType = compObj[i].type;
+                var memSpeed = compObj[i].speed;
+                var memModules = compObj[i].modules;
+                var memMemory = compObj[i].size;
+                optProp = '<td id="mem-type">' + memType + '</td>' + '<td id="mem-speed">' + memSpeed + '</td>' + '<td id="mem-modules">' + memModules + '</td>' + '<td id=mem-memory>' + memMemory + '</td>';
+            } else if (component === 'HDD') {
+                var hddSize = compObj[i].capacity;
+                var hddCache = compObj[i].cache;
+                var hddRpm = compObj[i].type;
+                optProp = '<td id="hdd-size">' + hddSize + '</td>' + '<td id="hdd-cache">' + hddCache + '</td>' + '<td id="hddRpm">' + hddRpm + '</td>';
+            } else if (component === 'PSU') {
+                tdp = compObj[i].watts;
+                psuEfficiency = compObj[i].efficiency;
+                optProp = '<td id="psu-efficiency">' + psuEfficiency + '</td>';
+            } else if (component === 'CASE'){
+                caseForm = compObj[i].form;
+                optProp2 = '<td id="case-form">' + caseForm + '</td>';
             }
 
-            var compRow = $('<tr class=' + component + '><td id="name">' + name + '</td>' + optProp + '<td id="watts">' + tdp + '</td><td id="eur">' + price + '</td></tr>');
+            var compRow = $('<tr class=' + component + '><td id="name">' + name + '</td>' + optProp + optProp2 + '<td id="eur">' + price + '</td></tr>');
 
             compRow.on("click", result);
 
@@ -197,10 +221,50 @@ function result() {
         }
 
         var component = 'RAM';
-        var text = '<p>Ahora pasaremos a elegir la GPU para nuestro procesador, tendremos una amplia gama para elegir, entre AMD y NVIDIA, dependiendo si el ordenador es para jugar o trabajar eligiremos una GPU u otra. Para trabajar o multimedia se recomiendan las r5 en AMD o GT en Nvidia, para jugar o diseño recomendamos las superiores R7, R9 o RX en AMD, o GTX en Nvidia, a partir de la serie X50/XX50.</p>'
-        //steps(component, text);
+        var text = '<p>A continuación podrás elegir la memoria ram. La cantidad de memoria difiere del uso que le vayamos a dar.</p> <p>Para hacerlo más fácil sólo mostramos los tipos de memoria compatible con vuestra configuración (las frecuencias no están contempladas, para ello debes mirar en la página del fabricante de la placa base escogida)</p> <p> Para equipos de oficina se recomienda al menos 4GB de ram, para equipos de Gaming es recomendado tener 16GB de ram y para equipos de diseño 32GB de ram.</p>'
+        steps(component, text);
+
+    } else if (componentType === 'RAM') {
+
+        for (i = 0; i < pcComponent.length; i++) {
+            ramStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
+        }
+
+        var component = 'HDD';
+        var text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>'
+        steps(component, text);
+
+    } else if (componentType === 'HDD') {
+
+        for (i = 0; i < pcComponent.length; i++) {
+            hddStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
+        }
+
+        var component = 'PSU';
+        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<br>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator() + 'W</h2>';
+        steps(component, text);
+
+    } else if (componentType === 'PSU') {
+        
+        for (i = 0; i < pcComponent.length; i++) {
+            psuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
+        }
+
+        var component = 'CASE';
+        var text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>';
+        steps(component, text);
 
     }
-
 }
 
+function calculator(){
+    var cpuPrice = parseFloat(cpuStore[5]);
+    var moboPrice = parseFloat(moboStore[2]);
+    var ramPrice = parseFloat(ramStore[5]);
+    var gpuPrice = parseFloat(gpuStore[6]);
+    var hddPrice = parseFloat(hddStore[4]);
+
+    var total = cpuPrice + moboPrice + ramPrice + gpuPrice + hddPrice;
+
+    return total;
+}

@@ -81,13 +81,17 @@
 	content: "€";
 }
 
-#gpu-mem-clock:after, #mem-boost:after{
+#gpu-mem-clock:after, #mem-boost:after, #mem-memory:after{
 	content: "MHz";
+}
+
+#mem-memory:after{
+	content: "GB";
 }
 
 #text-area>p{
 	font-family: 'Roboto Mono', monospace;
-	font-size: 15px;
+	font-size: 17px;
 	margin-right: 20px;
 	margin-left: 20px;
 	margin-bottom: 50px;
