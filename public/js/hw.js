@@ -1,4 +1,5 @@
 var cpuStore = [];
+var moboStore = [];
 
 $("#btn-start").on("click", firstInstructions);
 
@@ -9,14 +10,14 @@ function createButton(value, component) {
     btn.attr('class', 'btn');
     btn.attr('component', component);
 
-    if(value === 'AMD'){ //si el botón es amd o inte se le añade una brand con su marca y llama a la función que recogerá los datos de uno u otro
-        var amd = btn.attr('brand','AMD');
-        amd.on("click",function(){printComponents(value, component)})
-    } else if(value === 'Intel'){
-        var intel = btn.attr('brand','Intel');
-        intel.on("click",function(){printComponents(value, component)})
+    if (value === 'AMD') { //si el botón es amd o inte se le añade una brand con su marca y llama a la función que recogerá los datos de uno u otro
+        var amd = btn.attr('brand', 'AMD');
+        amd.on("click", function () { printComponents(component, value) })
+    } else if (value === 'Intel') {
+        var intel = btn.attr('brand', 'Intel');
+        intel.on("click", function () { printComponents(component, value) })
     }
-    
+
 
     btn.on("click", selector);
     btnArea.append(btn);
@@ -43,9 +44,14 @@ function steps(component, text) {
 
 function selector() {
     var compAttr = $(this).attr('component');
-    
-    
-    if (compAttr !== 'CPU' || compAttr !== 'GPU') {
+
+    if (compAttr !== 'CPU' && compAttr !== 'GPU') { //entra aquí si no es ni GPU ni CPU
+
+        if (compAttr === 'motherboard') { //sólo entra aquí si el componente es una motherboard
+            printComponents(compAttr, cpuStore[1].replace('+', ''));
+        }
+
+    } else if (compAttr !== 'CPU' || compAttr !== 'GPU') { //entra aquí si es GPU o CPU
 
         $.get('http://localhost:3000/' + compAttr, function getType(response) {
             var cpuObj = response;
@@ -69,7 +75,7 @@ function selector() {
     }
 }
 
-function printComponents(brand, component) {
+function printComponents(component, brand) {
     var textArea = $('#text-area');
     textArea.empty();
 
@@ -138,16 +144,29 @@ function result() {
     var tableArea = $('#table-area');
     tableArea.empty();
 
-    if ($(this).attr('class') === 'CPU') {
-        cpuProp = $(this)[0].cells; //saca el tr de cpu como array y guardamos sus propiedades
+    pcComponent = $(this)[0].cells; //saca a una variable los datos de un componente (puede ser cpu,mobo,gpu...)
 
-        for (i = 0; i < cpuProp.length; i++) {
-            cpuStore.push(cpuProp[i].innerText); //saca el texto de cada propiedad de cada td del tr
+    if ($(this).attr('class') === 'CPU') {
+        
+        for (i = 0; i < pcComponent.length; i++) {
+            cpuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
         var component = 'motherboard';
         var text = '<p>Ahora pasaremos a elegir la placa base para nuestro procesador, para ayudarte, sólo se van a mostrar aquellas placas compatibles con el socket del procesador seleccionado.</p>'
         steps(component, text);
+
+    } else if ($(this).attr('class') === 'motherboard') {
+        
+        for (i = 0; i < pcComponent.length; i++) {
+            moboStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
+        }
+
+        var component = 'GPU';
+        var text = '<p>Ahora pasaremos a elegir la GPU para nuestro procesador, tendremos una amplia gama para elegir, entre AMD y NVIDIA, dependiendo si el ordenador es para jugar o trabajar eligiremos una GPU u otra. Para trabajar o multimedia se recomiendan las r5 en AMD o GT en Nvidia, para jugar o diseño recomendamos las superiores R7, R9 o RX en AMD, o GTX en Nvidia, a partir de la serie X50/XX50.</p>'
+        steps(component, text);
+
     }
+
 }
 
