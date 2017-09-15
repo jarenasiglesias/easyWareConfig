@@ -73,7 +73,7 @@
 	content: "GHz";
 }
 
-#watts:after{
+#watts:after, #psu-wattage:after{
 	content: "W";
 }
 

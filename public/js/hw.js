@@ -169,9 +169,9 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
                 var hddRpm = compObj[i].type;
                 optProp = '<td id="hdd-size">' + hddSize + '</td>' + '<td id="hdd-cache">' + hddCache + '</td>' + '<td id="hddRpm">' + hddRpm + '</td>';
             } else if (component === 'PSU') {
-                tdp = compObj[i].watts;
                 psuEfficiency = compObj[i].efficiency;
                 optProp = '<td id="psu-efficiency">' + psuEfficiency + '</td>';
+                optProp2 = '<td id="psu-wattage">' + compObj[i].watts + '</td>';
             } else if (component === 'CASE'){
                 caseForm = compObj[i].form;
                 optProp2 = '<td id="case-form">' + caseForm + '</td>';
