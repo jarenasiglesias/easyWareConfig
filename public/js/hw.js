@@ -4,11 +4,14 @@ var gpuStore = [];
 var ramStore = [];
 var hddStore = [];
 var psuStore = [];
+var caseStore = [];
+
+var btnArea = $('#btn-area');
+var textArea = $('#text-area');
 
 $("#btn-start").on("click", firstInstructions);
 
 function createButton(value, component) {
-    var btnArea = $('#btn-area');
     var btn = $('<button>' + value + '</button>');
     btn.attr('class', 'btn');
     btn.attr('component', component);
@@ -35,13 +38,11 @@ function firstInstructions() {
 }
 
 function steps(component, text) {
-    var textArea = $('#text-area');
     textArea.empty();
     $('#content-title').text(component);
     var p = $(text);
     textArea.append(p);
 
-    var btnArea = $('#btn-area');
     btnArea.empty();
     var value = 'Siguiente';
     createButton(value, component);
@@ -79,7 +80,6 @@ function selector() {
                 }
             }
 
-            var btnArea = $('#btn-area');
             btnArea.empty();
 
             for (var i = 0; i < addedBrands.length; i++) {
@@ -90,7 +90,6 @@ function selector() {
 }
 
 function printComponents(component, brand) {
-    var textArea = $('#text-area');
     textArea.empty();
 
     var tableArea = $('#table-area');
@@ -172,7 +171,7 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
                 psuEfficiency = compObj[i].efficiency;
                 optProp = '<td id="psu-efficiency">' + psuEfficiency + '</td>';
                 optProp2 = '<td id="psu-wattage">' + compObj[i].watts + '</td>';
-            } else if (component === 'CASE'){
+            } else if (component === 'CASE') {
                 caseForm = compObj[i].form;
                 optProp2 = '<td id="case-form">' + caseForm + '</td>';
             }
@@ -241,11 +240,11 @@ function result() {
         }
 
         var component = 'PSU';
-        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<br>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator() + 'W</h2>';
+        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<br>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
         steps(component, text);
 
     } else if (componentType === 'PSU') {
-        
+
         for (i = 0; i < pcComponent.length; i++) {
             psuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
@@ -254,17 +253,50 @@ function result() {
         var text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>';
         steps(component, text);
 
+    } else {
+
+        for (i = 0; i < pcComponent.length; i++) {
+            caseStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
+        }
+        configResult();
     }
 }
 
-function calculator(){
-    var cpuPrice = parseFloat(cpuStore[5]);
-    var moboPrice = parseFloat(moboStore[2]);
-    var ramPrice = parseFloat(ramStore[5]);
-    var gpuPrice = parseFloat(gpuStore[6]);
-    var hddPrice = parseFloat(hddStore[4]);
+function calculator(type) {
 
+    if (type === 'watts') {
+        var cpuPrice = parseFloat(cpuStore[5]);
+        var moboPrice = parseFloat(moboStore[2]);
+        var ramPrice = parseFloat(ramStore[5]);
+        var gpuPrice = parseFloat(gpuStore[6]);
+        var hddPrice = parseFloat(hddStore[4]);
+    }else if (type === 'price'){
+        var cpuPrice = parseFloat(cpuStore[6]);
+        var moboPrice = parseFloat(moboStore[3]);
+        var ramPrice = parseFloat(ramStore[6]);
+        var gpuPrice = parseFloat(gpuStore[7]);
+        var hddPrice = parseFloat(hddStore[5]);
+    }
+    
     var total = cpuPrice + moboPrice + ramPrice + gpuPrice + hddPrice;
 
     return total;
+}
+
+function configResult() {
+    textArea.empty();
+    btnArea.empty();
+    $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
+
+
+    var uList = $('<ul></ul>');
+    uList.attr('id', 'result-list');
+    textArea.append(uList);
+    var list = '<li>' + cpuStore[0] + '</li><li>' + moboStore[0] + '</li><li>' + gpuStore[0] + '</li><li>' + ramStore[0] + '</li><li>' + hddStore[0] + '</li><li>' + psuStore[0] + '</li><li>' + caseStore[0] + '</li>';
+    uList.append(list);
+
+    var calcPrice = $('<h2></h2>');
+    calcPrice.text('Precio final: ' + calculator('price') + ' €');
+    calcPrice.attr('id','final-price');
+    textArea.after(calcPrice);
 }
