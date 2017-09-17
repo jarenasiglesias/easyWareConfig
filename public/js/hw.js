@@ -13,7 +13,7 @@ $("#btn-start").on("click", firstInstructions);
 
 function createButton(value, component) {
     var btn = $('<button>' + value + '</button>');
-    btn.attr('class', 'btn');
+    btn.attr('class', 'btn ' + value);
     btn.attr('component', component);
 
     if (value === 'AMD') { //si el botón es amd o inte se le añade una brand con su marca y llama a la función que recogerá los datos de uno u otro
@@ -240,7 +240,7 @@ function result() {
         }
 
         var component = 'PSU';
-        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<br>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
+        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
         steps(component, text);
 
     } else if (componentType === 'PSU') {
@@ -287,16 +287,23 @@ function configResult() {
     textArea.empty();
     btnArea.empty();
     $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
-
-
+    
+    var cpuResult = 'Procesador: ' + cpuStore[0];
+    var moboResult = 'Placa base: ' + moboStore[0];
+    var gpuResult = 'Tarjeta gráfica: ' + gpuStore[0];
+    var ramResult = 'Memoria Ram: ' + ramStore[0];
+    var hddResult = 'Disco duro: ' + hddStore[0];
+    var psuResult = 'Fuente de alimentación: ' + psuStore[0];
+    var caseResult = 'Caja: ' + caseStore[0];
+    
     var uList = $('<ul></ul>');
     uList.attr('id', 'result-list');
     textArea.append(uList);
-    var list = '<li>' + cpuStore[0] + '</li><li>' + moboStore[0] + '</li><li>' + gpuStore[0] + '</li><li>' + ramStore[0] + '</li><li>' + hddStore[0] + '</li><li>' + psuStore[0] + '</li><li>' + caseStore[0] + '</li>';
+    var list = '<li>' + cpuResult + '</li><li>' + moboResult + '</li><li>' + gpuResult + '</li><li>' + ramResult + '</li><li>' + hddResult + '</li><li>' + psuResult + '</li><li>' + caseResult + '</li>';
     uList.append(list);
 
     var calcPrice = $('<h2></h2>');
     calcPrice.text('Precio final: ' + calculator('price') + ' €');
     calcPrice.attr('id','final-price');
-    textArea.after(calcPrice);
+    uList.after(calcPrice);
 }

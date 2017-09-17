@@ -1,3 +1,54 @@
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.nav-link { font-size: 26px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#page{margin:0% !important; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#content-title { font-size: 90px !important; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#text-area>p { font-size: 55px !important; margin-top:100px;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#btn-area { margin:0% !important;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#btn-start,.Siguiente{ font-size: 50px !important; margin-left:36.5% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.AMD{ font-size: 50px !important; margin-left:33.5% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.Intel,.NVIDIA{ font-size: 50px !important; margin-left:3% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#table-area>*{ font-size: 23px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#table-area{ width: 100%; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#result-list>li { font-size: 25px; font-weight: bold; }
+}
+
+
+
+#page{
+	margin-left:15%;
+	margin-right:15%;
+}
+
 #nav-logo{
 	border-radius: 10px;
 	border: 2px solid;
@@ -31,6 +82,10 @@
 	font-family: 'Indie Flower';
 }
 
+#table-area{
+	margin-top: 40px;
+}
+
 #table-area>thead{
 	cursor: pointer;
 	background: rgba(0, 0, 0, .2);
@@ -52,8 +107,20 @@
 
 #table-area>*{	
 	font-family: 'Roboto Mono', monospace;
-	font-size: 20px;
 }
+
+.btn{
+	margin-top:10px;
+	margin-left: 7.5%;
+	margin-bottom: 5px;
+	border: 1px solid;
+}
+
+.btn:hover{
+	border-color: #83D4FE;
+	background-color: #FFF;
+}
+
 
 #btn-start:hover{
 	border: 1px solid;
@@ -62,16 +129,14 @@
 	opacity: 1 !Important;
 }
 
-.btn{
-	margin-top:10px;
-	margin-left: 60px;
-	margin-bottom: 5px;
-	border: 1px solid;
+#btn-area{
+	position: relative;
+	margin-left: 38.5%;
+	margin-right: 60% !important;
 }
 
-.btn:hover{
-	border-color: #83D4FE;
-	background-color: #FFF;
+.AMD{
+	margin-left: 2%;
 }
 
 #cpu-freq:after{
@@ -94,10 +159,15 @@
 	content: "GB";
 }
 
+#text-area{
+	text-align: center;
+}
+
 #text-area>p{
 	font-family: 'Roboto Mono', monospace;
-	font-size: 20px;
-	margin-bottom: 50px;
+	margin-bottom: 40px;
+	font-weight: bold;
+	font-size: 17px;
 }
 
 #icons-row{
@@ -130,10 +200,15 @@
 	text-align: center;
 }
 
+#warning{
+	text-align: center;
+}
+
 #final-price{
 	text-align: center;
 	margin-top: 30px;
 	text-decoration: underline;
+	font-weight: bold;
 	margin-left: 40px;
 }
 
