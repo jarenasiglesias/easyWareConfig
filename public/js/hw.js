@@ -11,6 +11,8 @@ var textArea = $('#text-area');
 
 $("#btn-start").on("click", firstInstructions);
 
+$("#btn-save").on("click", saveConfig);
+
 function createButton(value, component) {
     var btn = $('<button>' + value + '</button>');
     btn.attr('class', 'btn ' + value);
@@ -258,7 +260,9 @@ function result() {
         for (i = 0; i < pcComponent.length; i++) {
             caseStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
+
         configResult();
+        
     }
 }
 
@@ -284,10 +288,17 @@ function calculator(type) {
 }
 
 function configResult() {
+    
     textArea.empty();
     btnArea.empty();
-    $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
     
+    $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc
+    
+    $('#advice').removeAttr('hidden');
+
+    $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
+
+
     var cpuResult = 'Procesador: ' + cpuStore[0];
     var moboResult = 'Placa base: ' + moboStore[0];
     var gpuResult = 'Tarjeta gráfica: ' + gpuStore[0];
@@ -295,7 +306,7 @@ function configResult() {
     var hddResult = 'Disco duro: ' + hddStore[0];
     var psuResult = 'Fuente de alimentación: ' + psuStore[0];
     var caseResult = 'Caja: ' + caseStore[0];
-    
+
     var uList = $('<ul></ul>');
     uList.attr('id', 'result-list');
     textArea.append(uList);
@@ -306,4 +317,9 @@ function configResult() {
     calcPrice.text('Precio final: ' + calculator('price') + ' €');
     calcPrice.attr('id','final-price');
     uList.after(calcPrice);
+}
+
+function saveConfig(){
+    console.log($('#typeOfConfig').val())
+    
 }

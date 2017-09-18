@@ -2,6 +2,13 @@ var path = require('path');
 var express = require('express');
 var nunjucks = require('nunjucks');
 var mongoose = require('mongoose');
+var port     = process.env.PORT || 3000;
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var cookieParser = require('cookie-parser');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
 
 //Express
 var app = express(),
@@ -21,29 +28,36 @@ nunjucks.configure('views', {
 app.engine('html',nunjucks.render);
 app.set('view engine', 'html');
 
-app.get("/", function(req, res) {
-    res.render("layouts/startconfig.html", null);
-})
-
-app.get("/posts", function(req, res) {
-    res.render("layouts/posts.html", null);
-})
-
-//Mongoose
-var uri = "mongodb://localhost:27017/hardconf";
 var options = {
     useMongoClient: true
 }
-var db = mongoose.connection;
 
-//Conexion a MongoDB
-mongoose.connect(uri, options);
-db.on('error', function() {
-    console.log("Error al conectarse a MongoDB")
-});
-db.once('open', function() {
-    console.log("Conectado a MongoDB")
-});
+//Mongoose
+
+var configDB = require('./config/database.js');
+
+// configuration ===============================================================
+mongoose.connect(configDB.url, options); // connect to our database
+
+//app uses
+app.use(cookieParser()); // read cookies (needed for auth)
+app.use(bodyParser()); // get information from html forms
+
+app.set('view engine', 'ejs'); // set up ejs for templating
+
+// required for passport
+app.use(session({ secret: 'pubgthekingoftheworld' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+// routes ======================================================================
+require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+
+// launch ======================================================================
+console.log('Funcionando en el puerto: ' + port);
+
+require('./config/passport')(passport);
 
 //Schema del contenido de la CPU
 var cpuSchema = mongoose.Schema({
@@ -137,33 +151,6 @@ var MoboModel = mongoose.model('motherboard', moboSchema, 'motherboard');
 var PsuModel = mongoose.model('psu', psuSchema, 'psu');
 var RamModel = mongoose.model('rams',ramSchema, 'rams');
 var HddModel = mongoose.model('hdd',hddSchema,'hdd');
-
-/*
-
-//Búsqueda en consola de todos los elementos cpu
-CpuModel.find({}, function(err, p){
-	console.log(p);
-})
-
-var cpu = new Cpumodel({
-    brand: 'String',
-    model: 'String',
-    codename: 'String',
-    socket: 'String',
-    process: 0,
-    cores: 0,
-    threads: 0,
-    frequency: 0,
-    turbo: 0,
-    tdp: 0,
-    overclock: 'String'
-})
-
-cpu.save(function(err) {
-    if (err) throw err;
-    console.log('Nuevo cpu guardado');
-});
-*/
 
 //CPU
 app.get('/cpu', function(req, res) {
@@ -362,5 +349,19 @@ app.get('/hdd', function(req, res) {
         res.json(p);
     });
 })
+/*
+var configSchema = mongoose.Schema({
+    type: String
+});
+//Middleware
 
+//Estructura tabla BBDD
+var MyConfig = mongoose.model('myConfig', configSchema, 'myConfig');
+
+var myConfig = new MyConfig({ type: "hola" })
+myConfig.save(function (err) {
+    if (err) throw err;
+    console.log('Config registrado');
+});
+*/
 app.listen(3000);

@@ -1,4 +1,12 @@
 @media screen and (max-width:1200px) and (min-width: 600px) {
+	.navbar { height: 150px !important; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#login,#register,#disconect { font-size: 27px !important; margin-top: 30px !important; margin-bottom: 30px !important; margin-right: 5px ;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
 	.nav-link { font-size: 26px; }
 }
 
@@ -11,19 +19,19 @@
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#text-area>p { font-size: 55px !important; margin-top:100px;}
+	#text-area>p,#warning { font-size: 55px !important; margin-top:100px;}
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#btn-area { margin:0% !important;}
+	#btn-area,#save-area { margin-left:30%!important;}
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#btn-start,.Siguiente{ font-size: 50px !important; margin-left:36.5% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
+	#btn-start,.Siguiente,#btn-save{ font-size: 50px !important;  margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	.AMD{ font-size: 50px !important; margin-left:33.5% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
+	.AMD{ font-size: 50px !important; margin-left:5% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
@@ -31,7 +39,11 @@
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#table-area>*{ font-size: 23px; }
+	#btn-save { margin-left:10%!important;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#table-area>*{ font-size: 25px; }
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
@@ -39,7 +51,23 @@
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#result-list>li { font-size: 25px; font-weight: bold; }
+	#result-list>li { font-size: 30px; font-weight: bold; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.modal-body { margin-left: -79px; width: 450px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.modal-content,.form-box { padding-left: 100px; padding-right: 100px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#signupForm>*,#loginForm>*,#formLabel,#emailInput,#passwordInput,#regBtn,#loginBtn { font-size: 60px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.close { font-size: 50px; margin-left: 80px;}
 }
 
 
@@ -119,8 +147,13 @@
 .btn:hover{
 	border-color: #83D4FE;
 	background-color: #FFF;
+	color:black;
 }
 
+#login{
+	position: relative;
+    left: 60px;
+}
 
 #btn-start:hover{
 	border: 1px solid;
@@ -129,11 +162,13 @@
 	opacity: 1 !Important;
 }
 
-#btn-area{
+#btn-area,#save-area{
 	position: relative;
-	margin-left: 38.5%;
+	margin-left: 37.5%;
 	margin-right: 60% !important;
 }
+
+
 
 .AMD{
 	margin-left: 2%;
@@ -171,6 +206,7 @@
 }
 
 #icons-row{
+	margin-left:30px;
 	margin-top: 100px;
 	text-align: center;
 	margin-bottom: 50px;
@@ -210,6 +246,22 @@
 	text-decoration: underline;
 	font-weight: bold;
 	margin-left: 40px;
+}
+
+#advice-area{
+	text-align: center;
+	margin-left: 10%;
+	font-weight: inherit;
+	font-size: 30px;
+}
+
+#selector-area{
+	margin-left: 40%;	
+}
+
+#btn-save{
+	margin-left: 10%;
+	margin-top:5%;	
 }
 
 footer{

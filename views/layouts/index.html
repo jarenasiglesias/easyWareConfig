@@ -34,9 +34,18 @@
                 </div>
             </li>
         </ul>
-        <button type="button" class="btn" id="login" data-toggle="modal" data-target="#exampleModal">
+        {% if user %}
+
+        <a href="/logout"><button type="button" class="btn" id="disconect" data-toggle="modal" data-target="#modalRegister">
+            Desconectar
+        </button></a> {% else %}
+
+        <button type="button" class="btn" id="login" data-toggle="modal" data-target="#modalLogin">
             Login
-            </button>
+        </button>
+        <button type="button" class="btn" id="register" data-toggle="modal" data-target="#modalRegister">
+            Registro
+        </button> {% endif %}
     </div>
 </nav>
 {% endblock %} {% block content %}
@@ -66,6 +75,37 @@
                         <button class="btn" id="btn-start">¡Comenzar!</button>
                     </div>
                 </div>
+
+                {% if user %}
+                <div id="save-config" hidden>
+                    <div class="row">
+                        <div class="col-3" id="selector-area">
+                            <form action="">
+                                <select class="form-control" id="typeOfConfig">
+                                    <option>Configs de oficina</option>
+                                    <option>Configs multimedia</option>
+                                    <option>Configs gamer</option>
+                                    <option>Configs diseño</option>
+                                    <option>Configs casual</option>
+                                </select>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-10" id="save-area">
+                            <button class="btn btn-primary" id="btn-save">¡Guardar!</button>
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <div class="row" id="advice" hidden>
+                    <div class="col-10" id="advice-area">
+                        <i>Para guardar tu configuración debes estar logueado.</i>
+                    </div>
+                </div>
+                {% endif %}
+
             </div>
             <div id="icons-row">
                 <img src="/images/cpu.png">
@@ -77,6 +117,8 @@
         </div>
 
     </div>
-    {% endblock %} {% block jsApp %}
+    {% endblock %} 
+    
+    {% block jsApp %}
     <script type="text/javascript" src="/js/hw.js"></script>
     {% endblock %}
