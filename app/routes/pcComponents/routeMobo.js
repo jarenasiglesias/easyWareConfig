@@ -1,4 +1,4 @@
-var MoboModel = require('./models/moboModel');
+var MoboModel = require('../../models/moboModel');
 
 module.exports = function (app) {
 

@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block navbar %}
+{% extends "base.html" %} 
+{% block navbar %}
 <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
     <a class="navbar-brand" href="/">
             <img src="/images/logo.jpg" width="120" height="61" class="d-inline-block align-top" id="nav-logo" alt="">
@@ -9,8 +10,8 @@
                 <a class="nav-link" href="/">Empieza tu config</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle active" id="navbarDropdownMenuLink" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Publicaciones<span class="sr-only">(current)</span>
+                <a class="nav-link dropdown-toggle" id="dropPost" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Publicaciones</span>
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                     <a class="dropdown-item" href="/posts/office">Configs de oficina</a>
@@ -21,16 +22,17 @@
                 </div>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" id="dropComp" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Componentes
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Procesadores</a>
-                    <a class="dropdown-item" href="#">Placas base</a>
-                    <a class="dropdown-item" href="#">Tarjetas gráficas</a>
-                    <a class="dropdown-item" href="#">Memorias RAM</a>
-                    <a class="dropdown-item" href="#">Almacenamiento</a>
-                    <a class="dropdown-item" href="#">Fuentes de alimentación</a>
+                    <a class="dropdown-item" href="/component/cpu">Procesadores</a>
+                    <a class="dropdown-item" href="/component/motherboard">Placas base</a>
+                    <a class="dropdown-item" href="/component/gpu">Tarjetas gráficas</a>
+                    <a class="dropdown-item" href="/component/ram">Memorias RAM</a>
+                    <a class="dropdown-item" href="/component/hdd">Almacenamiento</a>
+                    <a class="dropdown-item" href="/component/psu">Fuentes de alimentación</a>
+                    <a class="dropdown-item" href="/component/case">Chásis</a>
                 </div>
             </li>
         </ul>
@@ -54,18 +56,16 @@
 {% endblock %} 
 {% block content %}
 
-
 <div class="container-fluid">
     <div class="row">
         <div class="col-12" id="content">
-            <h2 id="topic">{{id}}</h2>
+            <h2 id="type">{{id}}</h2>
             <hr>
-            <div id="publication">
-
-            </div>
+            <div id="publication"></div>
         </div>
     </div>
 </div>
+
 {% endblock %} {% block jsApp %}
-<script type="text/javascript" src="/js/topics.js"></script>
+<script type="text/javascript" src="/js/searchDb.js"></script>
 {% endblock %}

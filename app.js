@@ -35,7 +35,7 @@ var options = {
 
 //Mongoose
 
-var configDB = require('./config/database.js');
+var configDB = require('./app/config/database.js');
 
 // configuration ===============================================================
 mongoose.connect(configDB.url, options); // connect to our database
@@ -52,270 +52,45 @@ app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 
-// routes ======================================================================
-require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
+// Carga las rutas de login, register y direcciones de la página, además comprueba contraseñas y correos por si existen o si se mete una cotraseña incorrecta
 
-// launch ======================================================================
-console.log('Funcionando en el puerto: ' + port);
+require('./app/routes/routes.js')(app, passport); 
+require('./app/config/passport')(passport);
 
-require('./config/passport')(passport);
-
-//Schema del contenido de la CPU
-
-
-//Schema de cases
-var caseSchema = mongoose.Schema({
-    name: String,
-    form: String,
-    external525bay: String,
-    internal35bay: String,
-    price: Number
-});
-
-//Schema de gpu
-var gpuSchema = mongoose.Schema({
-    brand: String,
-    name: String,
-    chip: String,
-    process: String,
-    gpu_clock: Number,
-    gpu_boost: Number,
-    mem_clock: Number,
-    mem_boost: Number,
-    mem_size: Number,
-    tdp: Number,
-    price: Number
-});
-
-//Schema de mobo
-
-
-//Schema de psu
-var psuSchema = mongoose.Schema({
-    name: String,
-    series: String,
-    form: String,
-    efficiency: String,
-    watts: Number,
-    modular: String,
-    price: Number
-});
-
-//Schema de rams
-var ramSchema = mongoose.Schema({
-    name: String,
-    speed: String,
-    type: String,
-    cas: Number,
-    modules: String,
-    tdp: Number,
-    size: Number,
-    price: Number
-});
-
-//Schema de hdd
-var hddSchema = mongoose.Schema({
-    name: String,
-    series: String,
-    form: String,
-    type: String,
-    capacity: String,
-    cache: String,
-    price: Number
-});
-
-//Modelos de la BBDD
-var CaseModel = mongoose.model('case', caseSchema, 'case');
-var GpuModel = mongoose.model('gpu', gpuSchema, 'gpu');
-var PsuModel = mongoose.model('psu', psuSchema, 'psu');
-var RamModel = mongoose.model('rams', ramSchema, 'rams');
-var HddModel = mongoose.model('hdd', hddSchema, 'hdd');
-
+//Componentes del ordenador almacenados en MongoDB
 
 //CPU
 
-require('./app/routeCpu')(app);
+require('./app/routes/pcComponents/routeCpu')(app);
 
 //Mobo
 
-require('./app/routeMobo')(app);
+require('./app/routes/pcComponents/routeMobo')(app);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todos los gpu
-app.get('/gpu', function (req, res) {
-    console.log("Todos los gpu")
-    GpuModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
+//Gpu
 
-//busca sólo los gpu de marca Nvidia
-app.get('/gpu/nvidia', function (req, res) {
-    console.log("gpu Nvidia")
-    GpuModel.find({
-        "brand": 'NVIDIA'
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
+require('./app/routes/pcComponents/routeGpu')(app);
 
-//busca sólo los gpu de marca AMD
-app.get('/gpu/amd', function (req, res) {
-    console.log("gpu amd")
-    GpuModel.find({
-        "brand": 'AMD'
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todos los case
-app.get('/case', function (req, res) {
-    console.log("Todos los cases")
-    CaseModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//Ram
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todas la psu
-app.get('/psu', function (req, res) {
-    console.log("Todos los psu")
-    PsuModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todas las rams
-app.get('/ram', function (req, res) {
-    console.log("Todos las rams")
-    RamModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
+require('./app/routes/pcComponents/routeRam')(app);
 
-app.get('/ram/ddr3', function (req, res) {
-    console.log("Ram DDR3")
-    RamModel.find({
-        "type": "DDR3"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
+//Hdd
 
-app.get('/ram/ddr4', function (req, res) {
-    console.log("Ram DDR4")
-    RamModel.find({
-        "type": "DDR4"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
+require('./app/routes/pcComponents/routeHdd')(app);
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todos los hdd
-app.get('/hdd', function (req, res) {
-    console.log("Todos los hdd")
-    HddModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
+//Psu
 
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+require('./app/routes/pcComponents/routePsu')(app);
 
-var saveConfig = mongoose.Schema({
-    cpu: String,
-    mobo: String,
-    gpu: String,
-    ram: String,
-    hdd: String,
-    psu: String,
-    case: String,
-    price: Number,
-    topic: String
-});
+//case
 
-var SaveConfigModel = mongoose.model('myConfig', saveConfig, 'myConfig');
+require('./app/routes/pcComponents/routeCase')(app);
 
-app.get('/saveConfig', function (req, res) {
-    console.log("Todas las configs")
-    SaveConfigModel.find(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
+//lee las configs guardadas por los usuarios
+require('./app/routes/computerSaved/readConfig')(app);
 
-app.get('/saveConfig/multimedia', function (req, res) {
-    console.log("Todas las configs para multimedia")
-    SaveConfigModel.find({
-        "topic": "Configs multimedia"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/saveConfig/casual', function (req, res) {
-    console.log("Todas las configs casual")
-    SaveConfigModel.find({
-        "topic": "Configs casual"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/saveConfig/design', function (req, res) {
-    console.log("Todas las configs de diseño")
-    SaveConfigModel.find({
-        "topic": "Configs diseño"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/saveConfig/gamer', function (req, res) {
-    console.log("Todas las configs de gaming")
-    SaveConfigModel.find({
-        "topic": "Configs gamer"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/saveConfig/office', function (req, res) {
-    console.log("Todas las configs")
-    SaveConfigModel.find({
-        "topic": "Configs de oficina"
-    }, function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//Guardar en la base de datos
-
-app.post('/saveConfig', function (req, res){
-    var config = new SaveConfigModel(req.body)
-    console.log("Config guardada!")
-    config.save(function (err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
+//guarda las configs creadas por los usuarios
+require('./app/routes/computerSaved/saveConfig')(app);
 
 app.listen(3000);

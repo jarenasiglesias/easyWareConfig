@@ -26,12 +26,13 @@
                         Componentes
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Procesadores</a>
-                    <a class="dropdown-item" href="#">Placas base</a>
-                    <a class="dropdown-item" href="#">Tarjetas gráficas</a>
-                    <a class="dropdown-item" href="#">Memorias RAM</a>
-                    <a class="dropdown-item" href="#">Almacenamiento</a>
-                    <a class="dropdown-item" href="#">Fuentes de alimentación</a>
+                    <a class="dropdown-item" href="/component/cpu">Procesadores</a>
+                    <a class="dropdown-item" href="/component/motherboard">Placas base</a>
+                    <a class="dropdown-item" href="/component/gpu">Tarjetas gráficas</a>
+                    <a class="dropdown-item" href="/component/ram">Memorias RAM</a>
+                    <a class="dropdown-item" href="/component/hdd">Almacenamiento</a>
+                    <a class="dropdown-item" href="/component/psu">Fuentes de alimentación</a>
+                    <a class="dropdown-item" href="/component/case">Chásis</a>
                 </div>
             </li>
         </ul>
@@ -51,18 +52,26 @@
 </nav>
 {% endblock %} 
 {% block content %}
+
 <div class="container-fluid">
     <div class="row justify-content-center">
-        <div class="col-md-12" id="content">
+        <div class="col-12" id="content">
             <h2 id="content-title">Configura tu pc de forma sencilla y guiada</h2>
             <hr>
             <div class="container-fluid" id="page">
                 <div class="row">
-                    <div class="col-md-12 justify-content-center" id="text-area">
+                    <div class="col-12 justify-content-center" id="text-area">
                         <p>Bienvenido a nuestro asistente, te recomendamos que leas las instrucciones que te damos atentamente,
                             antes de darle a seguir, o seleccionar un componente.</p>
+                    </div>  
+                </div>
+
+                <div class="row">
+                    <div class="col-12" id="advice-area" hidden>
+                        <i id="advice">Para guardar tu configuración debes estar logueado.</i>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -73,14 +82,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-10" id="btn-area">
+                    <div class="col-12" id="btn-area">
                         <button class="btn" id="btn-start">¡Comenzar!</button>
                     </div>
                 </div>
 
                 <div id="form-select" hidden>
                     <div class="row">
-                        <div class="col-3" id="selector-area">
+                        <div class="col-12" id="selector-area">
                             {% if user %}
                             <form>
                                 <select class="form-control" id="typeOfConfig">
@@ -92,31 +101,26 @@
                                 </select>
                             </form>
                             {% endif %}
-                            <button id="select-submit" class="btn" >Aceptar</button>
                         </div>
                     </div>
-
+                </div>
                 {% if user %}
 
                 <div class="row" id="save-config" hidden>
-                    <div class="col-10" id="save-area">
+                    <div class="col-12" id="save-area">
                         <button type="submit" class="btn btn-primary" id="btn-save">¡Publicar!</button>
                     </div>
                 </div>
-                {% else %}
-                <div class="row" id="advice" hidden>
-                    <div class="col-10" id="advice-area">
-                        <i>Para guardar tu configuración debes estar logueado.</i>
-                    </div>
+            {% else %}
+            {% endif %}
+            <div class="row">
+                <div class="col-12" id="icons-row">
+                    <img src="/images/cpu.png">
+                    <img src="/images/mobo.png">
+                    <img src="/images/ram.png">
+                    <img src="/images/gpu.png">
+                    <img src="/images/hdd.png">
                 </div>
-                {% endif %}
-            </div>
-            <div id="icons-row">
-                <img src="/images/cpu.png">
-                <img src="/images/mobo.png">
-                <img src="/images/ram.png">
-                <img src="/images/gpu.png">
-                <img src="/images/hdd.png">
             </div>
         </div>
 
@@ -125,4 +129,19 @@
     
     {% block jsApp %}
     <script type="text/javascript" src="/js/hw.js"></script>
+    <script>
+    $(document).ready(controlVideo);
+    
+    function controlVideo(){
+        
+    var screenWidth = $(window).width();
+    
+    console.log(screenWidth)
+    if (screenWidth < 1000){
+        $('#video-background').removeAttr('autoplay');
+    }else if(screenWidth > 1000){
+        $('#video-background').attr('autoplay','');
+    }
+    };
+    </script>
     {% endblock %}

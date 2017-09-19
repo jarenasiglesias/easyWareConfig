@@ -1,4 +1,8 @@
 @media screen and (max-width:1200px) and (min-width: 600px) {
+	#video-background {display:none;}
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
 	.navbar { height: 150px !important; }
 }
 
@@ -8,6 +12,10 @@
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
 	.nav-link { font-size: 26px; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.dropdown-menu>a { font-size: 35px; }
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
@@ -23,10 +31,6 @@
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
-	#btn-area,#save-area { margin-left:30%!important;}
-}
-
-@media screen and (max-width:1200px) and (min-width: 600px) {
 	#btn-start,.Siguiente,#btn-save{ font-size: 50px !important;  margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
 }
 
@@ -36,10 +40,6 @@
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
 	.Intel,.NVIDIA{ font-size: 50px !important; margin-left:3% !important; margin-top: 100px; margin-bottom: 100px;  border-radius: 20px;}
-}
-
-@media screen and (max-width:1200px) and (min-width: 600px) {
-	#btn-save { margin-left:10%!important;}
 }
 
 @media screen and (max-width:1200px) and (min-width: 600px) {
@@ -70,7 +70,29 @@
 	.close { font-size: 50px; margin-left: 80px;}
 }
 
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	#publication { margin:0 !important; }
+}
 
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.card { width: 32% !important; }
+}
+
+@media screen and (max-width:1200px) and (min-width: 600px) {
+	.container>p { font-size: 30px; }
+}
+
+#background-novideo{
+	background-image: url('/images/bg-novideo.jpg');
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+}
+
+h2,p{
+	color:#FFF;
+}
 
 #page{
 	margin-left:15%;
@@ -79,7 +101,7 @@
 
 #nav-logo{
 	border-radius: 10px;
-	border: 2px solid;
+	border: 4px solid;
 	border-color: #747474;
 }
 
@@ -93,7 +115,7 @@
 }
 
 #content{
-	background-image: url('/images/bgcontent.png');
+	background-color:rgba(0, 0, 0, .7);
 	margin-top: 30px;
 	margin-bottom: 60px;
 	border-radius: 10px;
@@ -102,8 +124,6 @@
 
 #content>h2{
 	margin-top: 40px;
-	margin-right: 20px;
-	margin-left: 20px;
 	font-size: 50px;
 	font-weight: bold;
 	text-align: center;
@@ -138,9 +158,6 @@
 }
 
 .btn{
-	margin-top:10px;
-	margin-left: 7.5%;
-	margin-bottom: 5px;
 	border: 1px solid;
 }
 
@@ -152,7 +169,15 @@
 
 #login{
 	position: relative;
-    left: 60px;
+    right: 10px;
+}
+
+#btn-area{
+	text-align: center;
+}
+
+#btn-start{
+	display: inline-block;
 }
 
 #btn-start:hover{
@@ -162,16 +187,8 @@
 	opacity: 1 !Important;
 }
 
-#btn-area,#save-area{
-	position: relative;
-	margin-left: 37.5%;
-	margin-right: 60% !important;
-}
-
-
-
 .AMD{
-	margin-left: 2%;
+	margin-right: 1%;
 }
 
 #cpu-freq:after{
@@ -200,25 +217,22 @@
 
 #text-area>p{
 	font-family: 'Roboto Mono', monospace;
-	margin-bottom: 40px;
+	margin-bottom: 30px;
 	font-weight: bold;
 	font-size: 17px;
 }
 
 #icons-row{
-	margin-left:30px;
+	display: inline-block;
 	margin-top: 100px;
 	text-align: center;
 	margin-bottom: 50px;
 }
 
 #icons-row>img{
+	text-align: center;
 	margin-right: 10px;
 	margin-left: 10px;
-}
-
-.font{
-	background-image: url('/images/background.png');
 }
 
 .navbar{
@@ -249,14 +263,10 @@
 }
 
 #advice-area{
+	margin-bottom: 20px;
+	margin-top: 40px;
 	text-align: center;
-	margin-left: 10%;
-	font-weight: inherit;
 	font-size: 30px;
-}
-
-#selector-area{
-	margin-left: 40%;	
 }
 
 #btn-save{
@@ -282,6 +292,68 @@ footer{
 }
 
 ._id,.__v,.topic{
-	display:none;
+	display: none;
 }
 
+#publication{
+	margin-top:40px;
+	text-align: center;
+    margin-right: 15%;
+    margin-left: 15%;
+}
+
+.card {
+	background-image: url('/images/card.jpg');
+	background-attachment:fixed;
+	background-repeat: repeat;
+	background-position: center;
+	color: #FFF;
+	font-size: 15px;
+	float: left;
+    transition: 0.6s;
+	border-radius: 50px;
+	text-align: center;
+	border:2px solid;
+	border-color:#83D4FE;
+	width: 23%;
+	margin:5px;
+}
+
+.card:hover {
+	background-image: url('/images/card-hover.jpg');
+	background-attachment:fixed;
+	background-repeat: repeat;
+	background-position: center;
+	border-color: rgba(255, 0, 0, 0.5);
+}
+
+.card-picture {
+	margin-top: 15px;
+	border-radius: 20px;
+	width: 90%;
+	align-self: center;
+}
+
+.container {
+	padding: 2px 16px;
+	background-color:rgba(0, 0, 0, 0.7);
+	border-radius: 50px;
+	margin-top:15px;
+	margin-bottom: 15px;
+}
+
+.brand,.name,.price{
+	font-weight: bold;
+}
+
+
+#video-background { /*Propiedades CSS para poder poner el vídeo de fondo de pantalla de la web*/
+	position: fixed;
+	right: 0; 
+	bottom: 0;
+	min-width: 100%; 
+	min-height: 100%;
+	z-index: -100;
+}
+  
+ 

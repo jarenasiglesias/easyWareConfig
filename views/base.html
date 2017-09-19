@@ -12,18 +12,25 @@
 			{% include "includes/js.html" %}
 		{% endblock %}
     </head>
-	<body class="font">
+	<body id="background-novideo">
 		{% block modal %}
 			{% include "includes/modal.html" %}
 		{% endblock %}
 
-		{% block navbar %}{% endblock %}
-		{% block content %}{% endblock %}
+		{% block navbar %}
+		{% endblock %}
+
+		{% block content %}
+		{% endblock %}
 
 		{% block footer %}
 			{% include "includes/footer.html" %}
 		{% endblock %}
 
-		{% block jsApp %}{% endblock %}
+		{% block jsApp %}
+		{% endblock %}
+		<video loop id="video-background" muted autoplay>
+  			<source src="/videos/background.mp4" type="video/mp4">
+		</video>
 	</body>
 </html>

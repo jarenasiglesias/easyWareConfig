@@ -16,6 +16,12 @@ module.exports = function (app, passport) {
         res.render("layouts/topics.html", {id:req.params.id, user: req.user});
     })
 
+    //Página de componentes independientes
+
+    app.get("/component/:id", function (req, res) {
+        res.render("layouts/topics.html", {id:req.params.id, user: req.user});
+    })
+
     //Página por si falla el registro
 
     app.get("/reg-failure", function (req, res) {

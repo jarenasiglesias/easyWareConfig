@@ -1,26 +1,35 @@
-var cpuStore = [];
-var moboStore = [];
-var gpuStore = [];
-var ramStore = [];
-var hddStore = [];
-var psuStore = [];
-var caseStore = [];
-
-var computer = {};
+var cpuStore = [], moboStore = [], gpuStore = [], ramStore = [], hddStore = [], psuStore = [], caseStore = [], computer = {}; //variables que almacenaran las propiedades de cada componente en un array independiente y objeto computer con los nombres de cada componente
 
 var btnArea = $('#btn-area');
 var textArea = $('#text-area');
 
 $("#btn-start").on("click", firstInstructions);
+$("#btn-save").on("click", saveConfig); //botón que llama a función que guarda el objeto en la base de datos MongoDB
 
-$("#btn-save").on("click", saveConfig);
+function firstInstructions() { //función que inicia el primer paso asignando a component CPU, que será utilizado más adelante
+    var component = 'CPU';
+    var text = '<p>Vamos a comenzar seleccionando nuestra CPU, para ello contamos con dos principales marcas en el sector de CPU X86, que son AMD e INTEL</p>';
+    steps(component, text);
+}
 
-function createButton(value, component) {
-    var btn = $('<button>' + value + '</button>');
+function steps(component, text) { //esta función se encarga de iniciar los pasos antes de cargar los datos, dando una breve explicación
+    textArea.empty(); //elimina el texto existente para añadir un texto nuevo
+    $('#content-title').text(component);
+    var p = $(text);
+    textArea.append(p);
+
+    btnArea.empty(); //borra el botón para crear uno nuevo
+    var value = 'Siguiente';
+    createButton(value, component);
+}
+
+function createButton(value, component) { //función encargada de crear todos los botones necesarios dinámicamente
+    var btn = $('<button></button>');
+    btn.text(value);
     btn.attr('class', 'btn ' + value);
     btn.attr('component', component);
 
-    if (value === 'AMD') { //si el botón es amd o inte se le añade una brand con su marca y llama a la función que recogerá los datos de uno u otro
+    if (value === 'AMD') { //si el botón es amd o intel se le añade una brand con su marca y llama a la función que recogerá los datos de uno u otro
         var amd = btn.attr('brand', 'AMD');
         amd.on("click", function () { printComponents(component, value) })
     } else if (value === 'Intel') {
@@ -35,25 +44,8 @@ function createButton(value, component) {
     btnArea.append(btn);
 }
 
-function firstInstructions() {
-    var component = 'CPU';
-    var text = '<p>Vamos a comenzar seleccionando nuestra CPU, para ello contamos con dos principales marcas en el sector de CPU X86, que son AMD e INTEL</p>';
-    steps(component, text);
-}
-
-function steps(component, text) {
-    textArea.empty();
-    $('#content-title').text(component);
-    var p = $(text);
-    textArea.append(p);
-
-    btnArea.empty();
-    var value = 'Siguiente';
-    createButton(value, component);
-}
-
-function selector() {
-    var compAttr = $(this).attr('component');
+function selector() { //función encargada de hacer una selección en los componentes que lo necesiten
+    var compAttr = $(this).attr('component'); //saca el atributo que contiene el tipo de componente de la función que la llama
 
     if (compAttr !== 'CPU' && compAttr !== 'GPU') { //entra aquí si no es ni GPU ni CPU
         var socketType = cpuStore[1].replace('+', '');
@@ -62,7 +54,7 @@ function selector() {
             printComponents(compAttr, socketType);
 
         } else if (compAttr === 'RAM') { //sólo entra aquí si el componente es una ram
-            if (cpuStore[1] === 'FM2+' || cpuStore[1] === 'AM3+' || cpuStore[1] === '1150') { //sólo si se cumple alguno de estos sockets la memoria será DDR4, si no será DDR3
+            if (cpuStore[1] === 'FM2+' || cpuStore[1] === 'AM3+' || cpuStore[1] === '1150') { //controla que según el procesador escogido sólo aparezcan módulos de memoria compatibles
                 printComponents(compAttr, 'ddr3');
             } else {
                 printComponents(compAttr, 'ddr4');
@@ -71,7 +63,7 @@ function selector() {
             printComponents(compAttr, '');
         }
 
-    } else if (compAttr !== 'CPU' || compAttr !== 'GPU') { //entra aquí si es GPU o CPU
+    } else if (compAttr !== 'CPU' || compAttr !== 'GPU') { //controla en botones las dos variantes de marcas existentes, en el caso de cpu es importante porque amd e intel no comparten los mismos zócalos
         $.get('http://localhost:3000/' + compAttr, function getType(response) {
             var cpuObj = response;
             var addedBrands = []; //crea variable con array para almacenar cuantas marcas de cpu existen en la base de datos
@@ -93,24 +85,24 @@ function selector() {
     }
 }
 
-function printComponents(component, brand) {
+function printComponents(component, brand) { //función encargada de contruir la tabla html que muestra los resultados obtenidos de la base de datos
     textArea.empty();
 
     var tableArea = $('#table-area');
     tableArea.empty();
 
-    tableHeadBuilder(tableArea, component);
+    tableHeadBuilder(tableArea, component); //llama a una función que crea la cabecera de la tabla
 
     var tableComponentBody = $('<tbody></tbody>');
     tableArea.append(tableComponentBody);
 
-    tableBodyBuilder(tableArea, component, brand, tableComponentBody);
+    tableBodyBuilder(tableArea, component, brand, tableComponentBody);  //llama a una función que crea el cuerpo de la tabla
 };
 
 function tableHeadBuilder(tableArea, component, tableComponentBody) {
-    var optColum;
+    var optColum; //los opt son variables que se inicializan con distintas propiedades según el tipo de componente
     var optColum2 = 'Consumo';
-    if (component === 'CPU') {
+    if (component === 'CPU') { //según el tipo de componente crea una cabecera u otra, ya que tienen diferentes propiedades
         optColum = '<th> Socket ▼ </th>' + '<th> Núcleos ▼ </th>' + '<th> Hilos ▼ </th>' + '<th> Frec ▼ </th>';
     } else if (component === 'motherboard') {
         optColum = '<th> Socket ▼ </th>';
@@ -127,24 +119,25 @@ function tableHeadBuilder(tableArea, component, tableComponentBody) {
         optColum2 = 'Tamaño de caja';
     }
 
-    var headRow = $('<thead><tr><th> Nombre ▼ </th>' + optColum + '<th>' + optColum2 + '▼ </th><th> Precio ▼ </th></tr></thead>');
+    var headRow = $('<thead><tr><th> Nombre ▼ </th>' + optColum + '<th>' + optColum2 + '▼ </th><th> Precio ▼ </th></tr></thead>'); //aquí se introducen los opt según el tipo de componente y se dejan las cabeceras que comparten
     tableArea.append(headRow);
 }
 
-function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
+function tableBodyBuilder(tableArea, component, brand, tableComponentBody) { //esta función construye el cuerpo de la tabla obteniendo los datos de MongoDB
     $.get('http://localhost:3000/' + component + '/' + brand, function getType(response) {
         var compObj = response;
 
         for (var i = 0; i < compObj.length; i++) {
             tableArea.removeAttr('hidden');
-
-            var name = compObj[i].name;;
+            
+            //estas variables están compartidas entre todos los componentes
+            var name = compObj[i].name;
             var tdp = compObj[i].tdp;
             var price = '<b>' + compObj[i].price + '</b>';
             var optProp; //propiedad que varía según el componente
             var optProp2 = '<td id="watts">' + tdp + '</td>'; //inicializamos éste que se va a repetir excepto en case
 
-            if (component === 'CPU') {
+            if (component === 'CPU') { //según los componentes se inicializan propiedades distintas
                 var socket = compObj[i].socket;
                 var cpuCore = compObj[i].cores;
                 var cpuThread = compObj[i].threads;
@@ -182,7 +175,7 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
 
             var compRow = $('<tr class=' + component + '><td id="name">' + name + '</td>' + optProp + optProp2 + '<td id="eur">' + price + '</td></tr>');
 
-            compRow.on("click", result);
+            compRow.on("click", nextStep);
 
             tableComponentBody.append(compRow);
         }
@@ -190,9 +183,12 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) {
     })
 }
 
-function result() {
+function nextStep() { //función que introduce los valores sacados de los componentes en el array global de cada uno y sigue con el siguiente componente
     var tableArea = $('#table-area');
     tableArea.empty();
+
+    var component;
+    var text;
 
     var componentType = $(this).attr('class'); //tipo de componente que le llega a la función result
     var pcComponent = $(this)[0].cells; //saca a una variable los datos de un componente (puede ser cpu,mobo,gpu...)
@@ -203,8 +199,8 @@ function result() {
             cpuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'motherboard';
-        var text = '<p>Ahora pasaremos a elegir la placa base para nuestro procesador, para ayudarte, sólo se van a mostrar aquellas placas compatibles con el socket del procesador seleccionado.</p>'
+        component = 'motherboard';
+        text = '<p>Ahora pasaremos a elegir la placa base para nuestro procesador, para ayudarte, sólo se van a mostrar aquellas placas compatibles con el socket del procesador seleccionado.</p>'
         steps(component, text);
 
     } else if (componentType === 'motherboard') {
@@ -213,8 +209,8 @@ function result() {
             moboStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'GPU';
-        var text = '<p>Ahora pasaremos a elegir la GPU para nuestro procesador, tendremos una amplia gama para elegir, entre AMD y NVIDIA, dependiendo si el ordenador es para jugar o trabajar eligiremos una GPU u otra. Para trabajar o multimedia se recomiendan las r5 en AMD o GT en Nvidia, para jugar o diseño recomendamos las superiores R7, R9 o RX en AMD, o GTX en Nvidia, a partir de la serie X50/XX50.</p>'
+        component = 'GPU';
+        text = '<p>Ahora pasaremos a elegir la GPU para nuestro procesador, tendremos una amplia gama para elegir, entre AMD y NVIDIA, dependiendo si el ordenador es para jugar o trabajar eligiremos una GPU u otra. Para trabajar o multimedia se recomiendan las r5 en AMD o GT en Nvidia, para jugar o diseño recomendamos las superiores R7, R9 o RX en AMD, o GTX en Nvidia, a partir de la serie X50/XX50.</p>'
         steps(component, text);
 
     } else if (componentType === 'GPU') {
@@ -223,8 +219,8 @@ function result() {
             gpuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'RAM';
-        var text = '<p>A continuación podrás elegir la memoria ram. La cantidad de memoria difiere del uso que le vayamos a dar.</p> <p>Para hacerlo más fácil sólo mostramos los tipos de memoria compatible con vuestra configuración (las frecuencias no están contempladas, para ello debes mirar en la página del fabricante de la placa base escogida)</p> <p> Para equipos de oficina se recomienda al menos 4GB de ram, para equipos de Gaming es recomendado tener 16GB de ram y para equipos de diseño 32GB de ram.</p>'
+        component = 'RAM';
+        text = '<p>A continuación podrás elegir la memoria ram. La cantidad de memoria difiere del uso que le vayamos a dar.</p> <p>Para hacerlo más fácil sólo mostramos los tipos de memoria compatible con vuestra configuración (las frecuencias no están contempladas, para ello debes mirar en la página del fabricante de la placa base escogida)</p> <p> Para equipos de oficina se recomienda al menos 4GB de ram, para equipos de Gaming es recomendado tener 16GB de ram y para equipos de diseño 32GB de ram.</p>'
         steps(component, text);
 
     } else if (componentType === 'RAM') {
@@ -233,8 +229,8 @@ function result() {
             ramStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'HDD';
-        var text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>'
+        component = 'HDD';
+        text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>'
         steps(component, text);
 
     } else if (componentType === 'HDD') {
@@ -243,8 +239,8 @@ function result() {
             hddStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'PSU';
-        var text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
+        component = 'PSU';
+        text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
         steps(component, text);
 
     } else if (componentType === 'PSU') {
@@ -253,8 +249,8 @@ function result() {
             psuStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        var component = 'CASE';
-        var text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>';
+        component = 'CASE';
+        text = '<p>Ya casi hemos finalizado, vamos a elegir ahora el almacenamiento de nuestro ordenador, esto va más a gusto del consumidor, según las necesidades de almacenamiento que necesitemos.</p>';
         steps(component, text);
 
     } else {
@@ -263,7 +259,7 @@ function result() {
             caseStore.push(pcComponent[i].innerText); //saca el texto de cada propiedad de cada td del tr
         }
 
-        configResult();
+        typeConfigInit();
 
     }
 }
@@ -289,28 +285,31 @@ function calculator(type) {
     return total;
 }
 
-function configResult() {
+function typeConfigInit() { //función que introduce el tipo de configuración a la que pertenecerá el ordenador creado
 
     textArea.empty();
     btnArea.empty();
 
-
     $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
 
-    $('#advice').removeAttr('hidden'); //elimina de oculto el mensaje que pide que se registren
+    $('#advice-area').removeAttr('hidden'); //elimina de oculto el mensaje en el que pide que se registren para guardar la config
 
-    $('#form-select').removeAttr('hidden');
+    $('#form-select').removeAttr('hidden'); //elimina de oculto (si el usuario está logueado) el selector de tipo de configuración
 
-    $('#select-submit').on("click", function(){ //boton a cambiar el nombre que me libró del quebradero de cabeza de ayer de un form
-        computerInit($('#typeOfConfig').val())
+    var accept = $('<button></button>'); //boton que recoge el tipo de configuración se ha escogido de un select y lo pasa a la función computerInit
+    accept.attr('id','select-accept');
+    accept.attr('class','btn');
+    accept.text('Aceptar');
+    btnArea.append(accept);
+
+    accept.on("click", function () { //llama a la función pasando el parámetro con el tipo de config que guarda y vacía el botón y esconde el consejo
+        computerInit($('#typeOfConfig').val());
+        $('#advice-area').attr('hidden','');
+        btnArea.empty();
     });
 }
 
-function computerInit(value){
-    
-    $('#select-submit').attr('hidden','');
-
-    $('#typeOfConfig').attr('hidden','');
+function computerInit(value) { //función encargada de meter en el objeto todos los nombres de cada componente que estaban almacenados en sus arrays
 
     computer = {
         cpu: cpuStore[0],
@@ -324,10 +323,19 @@ function computerInit(value){
         topic: value
     }
 
+    printConfig(computer);
+}
+
+function printConfig(computer){ //Función encargada de mostrar finalmente la configuración creada
+
+    $('#select-submit').attr('hidden', '');
+    
+    $('#typeOfConfig').attr('hidden', '');
+
     var uList = $('<ul></ul>');
     uList.attr('id', 'result-list');
     textArea.append(uList);
-    var list = '<li>' + 'Procesador: ' +  computer.cpu + '</li><li>' + 'Placa base: ' + computer.mobo + '</li><li>' + 'Tarjeta gráfica: ' + computer.gpu + '</li><li>' + 'Memoria Ram: ' + computer.ram + '</li><li>' + 'Disco duro: ' + computer.hdd + '</li><li>' + 'Fuente de alimentación: ' + computer.psu + '</li><li>' + 'Caja: ' + computer.case + '</li>';
+    var list = '<li>' + 'Procesador: ' + computer.cpu + '</li><li>' + 'Placa base: ' + computer.mobo + '</li><li>' + 'Tarjeta gráfica: ' + computer.gpu + '</li><li>' + 'Memoria Ram: ' + computer.ram + '</li><li>' + 'Disco duro: ' + computer.hdd + '</li><li>' + 'Fuente de alimentación: ' + computer.psu + '</li><li>' + 'Caja: ' + computer.case + '</li>';
     uList.append(list);
 
     var calcPrice = $('<h2></h2>');
@@ -335,12 +343,12 @@ function computerInit(value){
     calcPrice.attr('id', 'final-price');
     uList.after(calcPrice);
 
-    $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc    
+    $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc si el usuario está logueado
 }
 
 
 function saveConfig() {
-    $.post('http://localhost:3000/saveConfig', computer, function (response) {
-        $('#save-config').attr('hidden','');
+    $.post('http://localhost:3000/saveConfig', computer, function (response) { //llama a la dirección que se encarga de guardar los datos del resultado
+        $('#save-config').attr('hidden', '');
     });
 }

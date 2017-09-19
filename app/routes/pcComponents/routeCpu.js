@@ -1,4 +1,4 @@
-var CpuModel = require('./models/cpuModel');
+var CpuModel = require('../../models/cpuModel');
 
 module.exports = function (app) {
 
