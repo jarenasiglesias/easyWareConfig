@@ -2,30 +2,31 @@ var path = require('path');
 var express = require('express');
 var nunjucks = require('nunjucks');
 var mongoose = require('mongoose');
-var port     = process.env.PORT || 3000;
+var port = process.env.PORT || 3000;
 var passport = require('passport');
-var flash    = require('connect-flash');
+var flash = require('connect-flash');
 
 var cookieParser = require('cookie-parser');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+
 
 //Express
 var app = express(),
     http = require("http"),
     server = http.createServer(app)
 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Nunjucks
 nunjucks.configure('views', {
-    autoescape:true,
+    autoescape: true,
     express: app,
     watch: true,
     noCache: false
 });
 
-app.engine('html',nunjucks.render);
+app.engine('html', nunjucks.render);
 app.set('view engine', 'html');
 
 var options = {
@@ -60,19 +61,7 @@ console.log('Funcionando en el puerto: ' + port);
 require('./config/passport')(passport);
 
 //Schema del contenido de la CPU
-var cpuSchema = mongoose.Schema({
-    brand: String,
-    model: String,
-    codename: String,
-    socket: String,
-    process: String,
-    cores: Number,
-    threads: Number,
-    frequency: Number,
-    turbo: Number,
-    tdp: Number,
-    overclock: String
-});
+
 
 //Schema de cases
 var caseSchema = mongoose.Schema({
@@ -99,15 +88,7 @@ var gpuSchema = mongoose.Schema({
 });
 
 //Schema de mobo
-var moboSchema = mongoose.Schema({
-    name: String,
-    socket: String,
-    form: String,
-    tdp: Number,
-    ram_slots: Number,
-    ram_max: Number,
-    price: Number
-});
+
 
 //Schema de psu
 var psuSchema = mongoose.Schema({
@@ -144,197 +125,97 @@ var hddSchema = mongoose.Schema({
 });
 
 //Modelos de la BBDD
-var CpuModel = mongoose.model('cpu', cpuSchema, 'cpu');
 var CaseModel = mongoose.model('case', caseSchema, 'case');
 var GpuModel = mongoose.model('gpu', gpuSchema, 'gpu');
-var MoboModel = mongoose.model('motherboard', moboSchema, 'motherboard');
 var PsuModel = mongoose.model('psu', psuSchema, 'psu');
-var RamModel = mongoose.model('rams',ramSchema, 'rams');
-var HddModel = mongoose.model('hdd',hddSchema,'hdd');
+var RamModel = mongoose.model('rams', ramSchema, 'rams');
+var HddModel = mongoose.model('hdd', hddSchema, 'hdd');
+
 
 //CPU
-app.get('/cpu', function(req, res) {
-    console.log("Todos los cpu")
-    CpuModel.find(function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
 
-//busca sólo los cpu de marca intel
-app.get('/cpu/intel', function(req, res) {
-    console.log("Cpu intel")
-    CpuModel.find({
-        "brand": 'Intel'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
+require('./app/routeCpu')(app);
 
-//busca sólo los cpu de marca AMD
-app.get('/cpu/amd', function(req, res) {
-    console.log("Cpu amd")
-    CpuModel.find({
-        "brand": 'AMD'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
+//Mobo
+
+require('./app/routeMobo')(app);
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los gpu
-app.get('/gpu', function(req, res) {
+app.get('/gpu', function (req, res) {
     console.log("Todos los gpu")
-    GpuModel.find(function(err, p) {
+    GpuModel.find(function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 })
 
 //busca sólo los gpu de marca Nvidia
-app.get('/gpu/nvidia', function(req, res) {
+app.get('/gpu/nvidia', function (req, res) {
     console.log("gpu Nvidia")
     GpuModel.find({
         "brand": 'NVIDIA'
-    }, function(err, p) {
+    }, function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 });
 
 //busca sólo los gpu de marca AMD
-app.get('/gpu/amd', function(req, res) {
+app.get('/gpu/amd', function (req, res) {
     console.log("gpu amd")
     GpuModel.find({
         "brand": 'AMD'
-    }, function(err, p) {
+    }, function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 });
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los case
-app.get('/case', function(req, res) {
+app.get('/case', function (req, res) {
     console.log("Todos los cases")
-    CaseModel.find(function(err, p) {
+    CaseModel.find(function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//busca todas las mobo
-app.get('/motherboard', function(req, res) {
-    console.log("Todos los mobo")
-    MoboModel.find(function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-})
 
-app.get('/motherboard/1151', function(req, res) {
-    console.log("socket 1151")
-    MoboModel.find({
-        "socket": '1151'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/1150', function(req, res) {
-    console.log("socket 1150")
-    MoboModel.find({
-        "socket": '1150'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/2066', function(req, res) {
-    console.log("socket 2066")
-    MoboModel.find({
-        "socket": '2066'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/2011-3', function(req, res) {
-    console.log("socket 2011-3")
-    MoboModel.find({
-        "socket": '2011-3'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/am3+', function(req, res) {
-    console.log("socket am3+")
-    MoboModel.find({
-        "socket": 'AM3+'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/am4', function(req, res) {
-    console.log("socket am4")
-    MoboModel.find({
-        "socket": 'AM4'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
-
-app.get('/motherboard/fm2+', function(req, res) {
-    console.log("socket fm2+")
-    MoboModel.find({
-        "socket": 'FM2+'
-    }, function(err, p) {
-        if (err) return console.error(err);
-        res.json(p);
-    });
-});
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todas la psu
-app.get('/psu', function(req, res) {
+app.get('/psu', function (req, res) {
     console.log("Todos los psu")
-    PsuModel.find(function(err, p) {
+    PsuModel.find(function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 })
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todas las rams
-app.get('/ram', function(req, res) {
+app.get('/ram', function (req, res) {
     console.log("Todos las rams")
-    RamModel.find(function(err, p) {
+    RamModel.find(function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 })
 
-app.get('/ram/ddr3', function(req, res) {
+app.get('/ram/ddr3', function (req, res) {
     console.log("Ram DDR3")
     RamModel.find({
         "type": "DDR3"
-    }, function(err, p) {
+    }, function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 });
 
-app.get('/ram/ddr4', function(req, res) {
-    console.log("Ram DDR3")
+app.get('/ram/ddr4', function (req, res) {
+    console.log("Ram DDR4")
     RamModel.find({
         "type": "DDR4"
-    }, function(err, p) {
+    }, function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
@@ -342,26 +223,99 @@ app.get('/ram/ddr4', function(req, res) {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //busca todos los hdd
-app.get('/hdd', function(req, res) {
+app.get('/hdd', function (req, res) {
     console.log("Todos los hdd")
-    HddModel.find(function(err, p) {
+    HddModel.find(function (err, p) {
         if (err) return console.error(err);
         res.json(p);
     });
 })
-/*
-var configSchema = mongoose.Schema({
-    type: String
-});
-//Middleware
 
-//Estructura tabla BBDD
-var MyConfig = mongoose.model('myConfig', configSchema, 'myConfig');
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-var myConfig = new MyConfig({ type: "hola" })
-myConfig.save(function (err) {
-    if (err) throw err;
-    console.log('Config registrado');
+var saveConfig = mongoose.Schema({
+    cpu: String,
+    mobo: String,
+    gpu: String,
+    ram: String,
+    hdd: String,
+    psu: String,
+    case: String,
+    price: Number,
+    topic: String
 });
-*/
+
+var SaveConfigModel = mongoose.model('myConfig', saveConfig, 'myConfig');
+
+app.get('/saveConfig', function (req, res) {
+    console.log("Todas las configs")
+    SaveConfigModel.find(function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+})
+
+app.get('/saveConfig/multimedia', function (req, res) {
+    console.log("Todas las configs para multimedia")
+    SaveConfigModel.find({
+        "topic": "Configs multimedia"
+    }, function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+app.get('/saveConfig/casual', function (req, res) {
+    console.log("Todas las configs casual")
+    SaveConfigModel.find({
+        "topic": "Configs casual"
+    }, function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+app.get('/saveConfig/design', function (req, res) {
+    console.log("Todas las configs de diseño")
+    SaveConfigModel.find({
+        "topic": "Configs diseño"
+    }, function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+app.get('/saveConfig/gamer', function (req, res) {
+    console.log("Todas las configs de gaming")
+    SaveConfigModel.find({
+        "topic": "Configs gamer"
+    }, function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+app.get('/saveConfig/office', function (req, res) {
+    console.log("Todas las configs")
+    SaveConfigModel.find({
+        "topic": "Configs de oficina"
+    }, function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+});
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//Guardar en la base de datos
+
+app.post('/saveConfig', function (req, res){
+    var config = new SaveConfigModel(req.body)
+    console.log("Config guardada!")
+    config.save(function (err, p) {
+        if (err) return console.error(err);
+        res.json(p);
+    });
+})
+
 app.listen(3000);

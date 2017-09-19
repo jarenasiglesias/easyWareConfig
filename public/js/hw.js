@@ -6,6 +6,8 @@ var hddStore = [];
 var psuStore = [];
 var caseStore = [];
 
+var computer = {};
+
 var btnArea = $('#btn-area');
 var textArea = $('#text-area');
 
@@ -262,7 +264,7 @@ function result() {
         }
 
         configResult();
-        
+
     }
 }
 
@@ -274,52 +276,71 @@ function calculator(type) {
         var ramPrice = parseFloat(ramStore[5]);
         var gpuPrice = parseFloat(gpuStore[6]);
         var hddPrice = parseFloat(hddStore[4]);
-    }else if (type === 'price'){
+    } else if (type === 'price') {
         var cpuPrice = parseFloat(cpuStore[6]);
         var moboPrice = parseFloat(moboStore[3]);
         var ramPrice = parseFloat(ramStore[6]);
         var gpuPrice = parseFloat(gpuStore[7]);
         var hddPrice = parseFloat(hddStore[5]);
     }
-    
+
     var total = cpuPrice + moboPrice + ramPrice + gpuPrice + hddPrice;
 
     return total;
 }
 
 function configResult() {
-    
+
     textArea.empty();
     btnArea.empty();
-    
-    $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc
-    
-    $('#advice').removeAttr('hidden');
+
 
     $('#content-title').text("¡ENHORABUENA, ÉSTA ES TU CONFIG!");
 
+    $('#advice').removeAttr('hidden'); //elimina de oculto el mensaje que pide que se registren
 
-    var cpuResult = 'Procesador: ' + cpuStore[0];
-    var moboResult = 'Placa base: ' + moboStore[0];
-    var gpuResult = 'Tarjeta gráfica: ' + gpuStore[0];
-    var ramResult = 'Memoria Ram: ' + ramStore[0];
-    var hddResult = 'Disco duro: ' + hddStore[0];
-    var psuResult = 'Fuente de alimentación: ' + psuStore[0];
-    var caseResult = 'Caja: ' + caseStore[0];
+    $('#form-select').removeAttr('hidden');
+
+    $('#select-submit').on("click", function(){ //boton a cambiar el nombre que me libró del quebradero de cabeza de ayer de un form
+        computerInit($('#typeOfConfig').val())
+    });
+}
+
+function computerInit(value){
+    
+    $('#select-submit').attr('hidden','');
+
+    $('#typeOfConfig').attr('hidden','');
+
+    computer = {
+        cpu: cpuStore[0],
+        mobo: moboStore[0],
+        gpu: gpuStore[0],
+        ram: ramStore[0],
+        hdd: hddStore[0],
+        psu: psuStore[0],
+        case: caseStore[0],
+        price: calculator('price'),
+        topic: value
+    }
 
     var uList = $('<ul></ul>');
     uList.attr('id', 'result-list');
     textArea.append(uList);
-    var list = '<li>' + cpuResult + '</li><li>' + moboResult + '</li><li>' + gpuResult + '</li><li>' + ramResult + '</li><li>' + hddResult + '</li><li>' + psuResult + '</li><li>' + caseResult + '</li>';
+    var list = '<li>' + 'Procesador: ' +  computer.cpu + '</li><li>' + 'Placa base: ' + computer.mobo + '</li><li>' + 'Tarjeta gráfica: ' + computer.gpu + '</li><li>' + 'Memoria Ram: ' + computer.ram + '</li><li>' + 'Disco duro: ' + computer.hdd + '</li><li>' + 'Fuente de alimentación: ' + computer.psu + '</li><li>' + 'Caja: ' + computer.case + '</li>';
     uList.append(list);
 
     var calcPrice = $('<h2></h2>');
-    calcPrice.text('Precio final: ' + calculator('price') + ' €');
-    calcPrice.attr('id','final-price');
+    calcPrice.text('Precio final: ' + computer.price + ' €');
+    calcPrice.attr('id', 'final-price');
     uList.after(calcPrice);
+
+    $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc    
 }
 
-function saveConfig(){
-    console.log($('#typeOfConfig').val())
-    
+
+function saveConfig() {
+    $.post('http://localhost:3000/saveConfig', computer, function (response) {
+        $('#save-config').attr('hidden','');
+    });
 }

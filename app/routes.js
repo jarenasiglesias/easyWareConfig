@@ -12,8 +12,8 @@ module.exports = function (app, passport) {
 
     //Página de posts
 
-    app.get("/posts", function (req, res) {
-        res.render("layouts/posts.html", null);
+    app.get("/posts/:id", function (req, res) {
+        res.render("layouts/topics.html", {id:req.params.id, user: req.user});
     })
 
     //Página por si falla el registro
@@ -79,9 +79,14 @@ module.exports = function (app, passport) {
         failureFlash : true // allow flash messages
     }));
 
-    
 };
-
+/*
+module.exports = function (app){
+    app.post('/insert', function(req,res,next){
+        console.log(req.body
+        )});
+}
+*/
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 

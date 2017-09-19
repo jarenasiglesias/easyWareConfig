@@ -1,4 +1,5 @@
-{% extends "base.html" %} {% block navbar %}
+{% extends "base.html" %} 
+{% block navbar %}
 <nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
     <a class="navbar-brand" href="/">
             <img src="/images/logo.jpg" width="120" height="61" class="d-inline-block align-top" id="nav-logo" alt="">
@@ -11,13 +12,13 @@
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Publicaciones
-                    </a>
+                </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">Configs de oficina</a>
-                    <a class="dropdown-item" href="#">Configs multimedia</a>
-                    <a class="dropdown-item" href="#">Configs gamer</a>
-                    <a class="dropdown-item" href="#">Configs diseño</a>
-                    <a class="dropdown-item" href="#">Configs casual</a>
+                    <a class="dropdown-item" href="/posts/office">Configs de oficina</a>
+                    <a class="dropdown-item" href="/posts/multimedia">Configs multimedia</a>
+                    <a class="dropdown-item" href="/posts/gamer">Configs gamer</a>
+                    <a class="dropdown-item" href="/posts/design">Configs diseño</a>
+                    <a class="dropdown-item" href="/posts/casual">Configs casual</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -48,7 +49,8 @@
         </button> {% endif %}
     </div>
 </nav>
-{% endblock %} {% block content %}
+{% endblock %} 
+{% block content %}
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class="col-md-12" id="content">
@@ -76,11 +78,11 @@
                     </div>
                 </div>
 
-                {% if user %}
-                <div id="save-config" hidden>
+                <div id="form-select" hidden>
                     <div class="row">
                         <div class="col-3" id="selector-area">
-                            <form action="">
+                            {% if user %}
+                            <form>
                                 <select class="form-control" id="typeOfConfig">
                                     <option>Configs de oficina</option>
                                     <option>Configs multimedia</option>
@@ -89,13 +91,16 @@
                                     <option>Configs casual</option>
                                 </select>
                             </form>
+                            {% endif %}
+                            <button id="select-submit" class="btn" >Aceptar</button>
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-10" id="save-area">
-                            <button class="btn btn-primary" id="btn-save">¡Guardar!</button>
-                        </div>
+                {% if user %}
+
+                <div class="row" id="save-config" hidden>
+                    <div class="col-10" id="save-area">
+                        <button type="submit" class="btn btn-primary" id="btn-save">¡Publicar!</button>
                     </div>
                 </div>
                 {% else %}
@@ -105,7 +110,6 @@
                     </div>
                 </div>
                 {% endif %}
-
             </div>
             <div id="icons-row">
                 <img src="/images/cpu.png">

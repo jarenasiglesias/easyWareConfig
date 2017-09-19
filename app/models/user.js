@@ -1,24 +1,24 @@
-// load the things we need
+// cargamos lo que vamos a necesitar
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
-// define the schema for our user model
+// definimos el schema 
 var userSchema = mongoose.Schema({
     email: String,
     password: String,
     myconfig: Array
 });
 
-// methods ======================
-// generating a hash
+// metodos ======================
+// generando un hash
 userSchema.methods.generateHash = function (password) {
     return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-// checking if password is valid
+// comprobando si la contraseña es válida
 userSchema.methods.validPassword = function (password) {
     return bcrypt.compareSync(password, this.password);
 };
 
-// create the model for users and expose it to our app
+// creamos el modelo
 module.exports = mongoose.model('User', userSchema);
