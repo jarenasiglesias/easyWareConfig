@@ -307,7 +307,7 @@ function typeConfigInit() { //función que introduce el tipo de configuración a
     btnArea.append(accept);
 
     accept.on("click", function () { //llama a la función pasando el parámetro con el tipo de config que guarda y vacía el botón y esconde el consejo
-        computerInit($('#typeOfConfig').val());
+        computerInit($('#type-of-config').val());
         $('#advice-area').attr('hidden','');
         btnArea.empty();
     });

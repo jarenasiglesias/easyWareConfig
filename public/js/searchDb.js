@@ -27,7 +27,7 @@ function showData(type, url, classType) {
             $('#publication').append(card);
 
             var responseList = $('<div></div>');
-            responseList.attr('class', 'container');
+            responseList.attr('class', 'card-container');
 
             var img = $('<img>');
             img.attr('class','card-picture');

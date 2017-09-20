@@ -1,57 +1,59 @@
 {% extends "base.html" %} 
 {% block navbar %}
-<nav class="navbar navbar-toggleable navbar-inverse">
-    <a class="navbar-brand" href="/">
-            <img src="/images/logo.jpg" width="120" height="61" class="d-inline-block align-top" id="nav-logo" alt="">
-        </a>
-    <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Empieza tu config</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropPost" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Publicaciones</span>
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/posts/office">Configs de oficina</a>
-                    <a class="dropdown-item" href="/posts/multimedia">Configs multimedia</a>
-                    <a class="dropdown-item" href="/posts/gamer">Configs gamer</a>
-                    <a class="dropdown-item" href="/posts/design">Configs diseño</a>
-                    <a class="dropdown-item" href="/posts/casual">Configs casual</a>
-                </div>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="dropComp" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Componentes
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="/component/cpu">Procesadores</a>
-                    <a class="dropdown-item" href="/component/motherboard">Placas base</a>
-                    <a class="dropdown-item" href="/component/gpu">Tarjetas gráficas</a>
-                    <a class="dropdown-item" href="/component/ram">Memorias RAM</a>
-                    <a class="dropdown-item" href="/component/hdd">Almacenamiento</a>
-                    <a class="dropdown-item" href="/component/psu">Fuentes de alimentación</a>
-                    <a class="dropdown-item" href="/component/case">Chásis</a>
-                </div>
-            </li>
-        </ul>
-        {% if user %}
-
-        <a href="/logout"><button type="button" class="btn" id="disconect" data-toggle="modal" data-target="#modalRegister">
-            Desconectar
-        </button></a> 
-        
-        {% else %}
-
-        <button type="button" class="btn" id="login" data-toggle="modal" data-target="#modalLogin">
-            Login
+<nav class="navbar navbar-toggleable-md navbar-inverse">
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
         </button>
-        <button type="button" class="btn" id="register" data-toggle="modal" data-target="#modalRegister">
-            Registro
-        </button> 
-        {% endif %}
-    </div>
+        <a class="navbar-brand" href="/">
+                <img src="/images/logo.jpg" width="120" height="61" class="d-inline-block align-top" id="nav-logo" alt="">
+            </a>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Empieza tu config</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Publicaciones
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/posts/office">Configs de oficina</a>
+                        <a class="dropdown-item" href="/posts/multimedia">Configs multimedia</a>
+                        <a class="dropdown-item" href="/posts/gamer">Configs gamer</a>
+                        <a class="dropdown-item" href="/posts/design">Configs diseño</a>
+                        <a class="dropdown-item" href="/posts/casual">Configs casual</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Componentes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/component/cpu">Procesadores</a>
+                        <a class="dropdown-item" href="/component/motherboard">Placas base</a>
+                        <a class="dropdown-item" href="/component/gpu">Tarjetas gráficas</a>
+                        <a class="dropdown-item" href="/component/ram">Memorias RAM</a>
+                        <a class="dropdown-item" href="/component/hdd">Almacenamiento</a>
+                        <a class="dropdown-item" href="/component/psu">Fuentes de alimentación</a>
+                        <a class="dropdown-item" href="/component/case">Chásis</a>
+                    </div>
+                </li>
+            </ul>
+            {% if user %}
+    
+            <a href="/logout"><button type="button" class="btn" id="disconect" data-toggle="modal" data-target="#modalRegister">
+                Desconectar
+            </button></a> 
+            
+            {% else %}
+    
+            <button type="button" class="btn" id="login" data-toggle="modal" data-target="#modalLogin">
+                Login
+            </button>
+            <button type="button" class="btn" id="register" data-toggle="modal" data-target="#modalRegister">
+                Registro
+            </button> {% endif %}
+        </div>
 </nav>
 {% endblock %} 
 {% block content %}

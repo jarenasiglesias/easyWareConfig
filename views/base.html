@@ -27,10 +27,11 @@
 			{% include "includes/footer.html" %}
 		{% endblock %}
 
+		{% block video %}
+			{% include "includes/video.html" %}
+		{% endblock %}
+
 		{% block jsApp %}
 		{% endblock %}
-		<video loop id="video-background" muted autoplay>
-  			<source src="/videos/background.mp4" type="video/mp4">
-		</video>
 	</body>
 </html>
