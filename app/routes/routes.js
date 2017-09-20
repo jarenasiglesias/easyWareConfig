@@ -22,10 +22,16 @@ module.exports = function (app, passport) {
         res.render("layouts/topics.html", {id:req.params.id, user: req.user});
     })
 
+    //Página por si falla el login
+
+    app.get("/log-failure", function (req, res) {
+        res.render("layouts/log-failure.html", null);
+    })
+
     //Página por si falla el registro
 
     app.get("/reg-failure", function (req, res) {
-        res.render("layouts/register-fail.html", null);
+        res.render("layouts/reg-failure.html", null);
     })
 
     // =====================================

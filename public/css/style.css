@@ -71,7 +71,7 @@
 		margin:0% !important; 
 	}
 
-	#content-title { 
+	#content-title,#type { 
 		font-size: 90px !important; 
 	}
 
@@ -149,6 +149,10 @@
 		font-size: 30px; 
 	} 
 
+	#msg-failure{
+		font-size: 40px;
+	}
+
 }
 
 
@@ -197,7 +201,6 @@ h2,p{
 
 #content>h2{
 	margin-top: 40px;
-	font-size: 50px;
 	font-weight: bold;
 	text-align: center;
 	font-family: 'Indie Flower';
@@ -277,6 +280,10 @@ h2,p{
 
 #mem-memory:after{
 	content: "GB";
+}
+
+#hdd-size:after{
+	content: 'TB';
 }
 
 #text-area,#warning,#btn-area,#save-area{
@@ -429,4 +436,12 @@ footer{
 	min-height: 100%;
 	z-index: -100;
 }
-  
+
+.form-title{
+	color:white;
+}
+
+#msg-failure{
+	color:#FE0000;
+	text-align: center;
+}
