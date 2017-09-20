@@ -172,7 +172,7 @@ h2,p{
     right: 10px;
 }
 
-#btn-area{
+#btn-area,#save-area{
 	text-align: center;
 }
 
@@ -236,6 +236,7 @@ h2,p{
 }
 
 .navbar{
+	background-color: #000 !important;
 	height: 80px;
 }
 
@@ -244,6 +245,7 @@ h2,p{
 }
 
 #result-list>*{
+	color: #FFF;
 	margin-top:10px;
 	list-style: none;
 	font-weight: bold;
@@ -269,8 +271,17 @@ h2,p{
 	font-size: 30px;
 }
 
+#advice{
+	color:#FFF;
+}
+
+#type-of-config{
+	margin-top: -110px;
+}
+
 #btn-save{
-	margin-left: 10%;
+	display: inline-block;
+	margin-left: 4%;
 	margin-top:5%;	
 }
 

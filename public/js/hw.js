@@ -266,21 +266,25 @@ function nextStep() { //función que introduce los valores sacados de los compon
 
 function calculator(type) {
 
+    var cpuCal, moboCal, ramCal, gpuCal, hddCal, caseCal;
+
     if (type === 'watts') {
-        var cpuPrice = parseFloat(cpuStore[5]);
-        var moboPrice = parseFloat(moboStore[2]);
-        var ramPrice = parseFloat(ramStore[5]);
-        var gpuPrice = parseFloat(gpuStore[6]);
-        var hddPrice = parseFloat(hddStore[4]);
+        cpuCal = parseFloat(cpuStore[5]);
+        moboCal = parseFloat(moboStore[2]);
+        ramCal = parseFloat(ramStore[5]);
+        gpuCal = parseFloat(gpuStore[6]);
+        hddCal = parseFloat(hddStore[4]);
+        caseCal = 0;
     } else if (type === 'price') {
-        var cpuPrice = parseFloat(cpuStore[6]);
-        var moboPrice = parseFloat(moboStore[3]);
-        var ramPrice = parseFloat(ramStore[6]);
-        var gpuPrice = parseFloat(gpuStore[7]);
-        var hddPrice = parseFloat(hddStore[5]);
+        cpuCal = parseFloat(cpuStore[6]);
+        moboCal = parseFloat(moboStore[3]);
+        ramCal = parseFloat(ramStore[6]);
+        gpuCal = parseFloat(gpuStore[7]);
+        hddCal = parseFloat(hddStore[5]);
+        caseCal = parseFloat(caseStore[2])
     }
 
-    var total = cpuPrice + moboPrice + ramPrice + gpuPrice + hddPrice;
+    var total = cpuCal + moboCal + ramCal + gpuCal + hddCal + caseCal;
 
     return total;
 }
@@ -327,10 +331,8 @@ function computerInit(value) { //función encargada de meter en el objeto todos 
 }
 
 function printConfig(computer){ //Función encargada de mostrar finalmente la configuración creada
-
-    $('#select-submit').attr('hidden', '');
     
-    $('#typeOfConfig').attr('hidden', '');
+    $('#type-of-config').attr('hidden', '');
 
     var uList = $('<ul></ul>');
     uList.attr('id', 'result-list');

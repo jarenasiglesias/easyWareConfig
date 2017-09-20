@@ -1,6 +1,5 @@
-{% extends "base.html" %} 
-{% block navbar %}
-<nav class="navbar navbar-toggleable navbar-inverse bg-inverse">
+{% extends "base.html" %} {% block navbar %}
+<nav class="navbar navbar-toggleable navbar-inverse">
     <a class="navbar-brand" href="/">
             <img src="/images/logo.jpg" width="120" height="61" class="d-inline-block align-top" id="nav-logo" alt="">
         </a>
@@ -40,7 +39,9 @@
 
         <a href="/logout"><button type="button" class="btn" id="disconect" data-toggle="modal" data-target="#modalRegister">
             Desconectar
-        </button></a> {% else %}
+        </button></a> 
+        
+        {% else %}
 
         <button type="button" class="btn" id="login" data-toggle="modal" data-target="#modalLogin">
             Login
@@ -50,8 +51,7 @@
         </button> {% endif %}
     </div>
 </nav>
-{% endblock %} 
-{% block content %}
+{% endblock %} {% block content %}
 
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -63,15 +63,21 @@
                     <div class="col-12 justify-content-center" id="text-area">
                         <p>Bienvenido a nuestro asistente, te recomendamos que leas las instrucciones que te damos atentamente,
                             antes de darle a seguir, o seleccionar un componente.</p>
-                    </div>  
-                </div>
-
-                <div class="row">
-                    <div class="col-12" id="advice-area" hidden>
-                        <i id="advice">Para guardar tu configuración debes estar logueado.</i>
                     </div>
                 </div>
-
+                <div class="row">
+                    <div class="col-12" id="advice-area" hidden>
+                        {% if user %}
+                        
+                        <p>Puedes guardar tu config</p>
+                        
+                        {% else %}
+                        
+                        <i id="advice">Para guardar tu configuración debes estar logueado.</i>
+                        
+                        {% endif %}
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
@@ -92,7 +98,7 @@
                         <div class="col-12" id="selector-area">
                             {% if user %}
                             <form>
-                                <select class="form-control" id="typeOfConfig">
+                                <select class="form-control" id="type-of-config">
                                     <option>Configs de oficina</option>
                                     <option>Configs multimedia</option>
                                     <option>Configs gamer</option>
@@ -105,43 +111,24 @@
                     </div>
                 </div>
                 {% if user %}
-
                 <div class="row" id="save-config" hidden>
                     <div class="col-12" id="save-area">
                         <button type="submit" class="btn btn-primary" id="btn-save">¡Publicar!</button>
                     </div>
                 </div>
-            {% else %}
-            {% endif %}
-            <div class="row">
-                <div class="col-12" id="icons-row">
-                    <img src="/images/cpu.png">
-                    <img src="/images/mobo.png">
-                    <img src="/images/ram.png">
-                    <img src="/images/gpu.png">
-                    <img src="/images/hdd.png">
+                {% endif %}
+                <div class="row">
+                    <div class="col-12" id="icons-row">
+                        <img src="/images/cpu.png">
+                        <img src="/images/mobo.png">
+                        <img src="/images/ram.png">
+                        <img src="/images/gpu.png">
+                        <img src="/images/hdd.png">
+                    </div>
                 </div>
             </div>
-        </div>
 
-    </div>
-    {% endblock %} 
-    
-    {% block jsApp %}
-    <script type="text/javascript" src="/js/hw.js"></script>
-    <script>
-    $(document).ready(controlVideo);
-    
-    function controlVideo(){
-        
-    var screenWidth = $(window).width();
-    
-    console.log(screenWidth)
-    if (screenWidth < 1000){
-        $('#video-background').removeAttr('autoplay');
-    }else if(screenWidth > 1000){
-        $('#video-background').attr('autoplay','');
-    }
-    };
-    </script>
-    {% endblock %}
+        </div>
+        {% endblock %} {% block jsApp %}
+        <script type="text/javascript" src="/js/hw.js"></script>
+        {% endblock %}
