@@ -495,3 +495,4 @@ db.motherboard.insert({name:'Biostar H81MHV3',socket:'1150',form:'Micro ATX',tdp
 db.motherboard.insert({name:'Foxconn H81MXV-D',socket:'1150',form:'Micro ATX',tdp:45,ram_slots:2,ram_max:16,price:59.99})
 db.motherboard.insert({name:'ASRock E3C224-V+',socket:'1150',form:'Full ATX',tdp:80,ram_slots:4,ram_max:32,price:187.46})
 db.motherboard.insert({name:'Biostar TA75MH2',socket:'FM2',form:'Micro ATX',tdp:45,ram_slots:2,ram_max:32,price:80.60})
+db.motherboard.insert({name:'ASUS PRIME X399-A AMD Threadripper',socket:'SP3r2',form:'Full ATX',tdp:80,ram_slots:8,ram_max:128,price:349.99})

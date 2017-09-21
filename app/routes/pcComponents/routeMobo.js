@@ -61,6 +61,16 @@ module.exports = function (app) {
         });
     });
 
+    app.get('/motherboard/fm2+', function (req, res) {
+        console.log("socket fm2+")
+        MoboModel.find({
+            "socket": 'FM2+'
+        }, function (err, p) {
+            if (err) return console.error(err);
+            res.json(p);
+        });
+    });
+
     app.get('/motherboard/am4', function (req, res) {
         console.log("socket am4")
         MoboModel.find({
@@ -71,15 +81,16 @@ module.exports = function (app) {
         });
     });
 
-    app.get('/motherboard/fm2+', function (req, res) {
-        console.log("socket fm2+")
+    app.get('/motherboard/SP3r2', function (req, res) {
+        console.log("socket SP3r2")
         MoboModel.find({
-            "socket": 'FM2+'
+            "socket": 'SP3r2'
         }, function (err, p) {
             if (err) return console.error(err);
             res.json(p);
         });
     });
+    
 };
 
 

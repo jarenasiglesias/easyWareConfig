@@ -4,7 +4,6 @@ var btnArea = $('#btn-area');
 var textArea = $('#text-area');
 
 $("#btn-start").on("click", firstInstructions);
-$("#btn-save").on("click", saveConfig); //botón que llama a función que guarda el objeto en la base de datos MongoDB
 
 function firstInstructions() { //función que inicia el primer paso asignando a component CPU, que será utilizado más adelante
     var component = 'CPU';
@@ -348,6 +347,8 @@ function printConfig(computer){ //Función encargada de mostrar finalmente la co
     $('#save-config').removeAttr('hidden'); //muestra el botón que hay oculto en el html para guardar la config del pc si el usuario está logueado
 }
 
+
+$("#btn-save").on("click", saveConfig); //botón que llama a función que guarda el objeto en la base de datos MongoDB
 
 function saveConfig() {
     $.post('http://localhost:3000/saveConfig', computer, function (response) { //llama a la dirección que se encarga de guardar los datos del resultado
