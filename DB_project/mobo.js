@@ -299,7 +299,7 @@ db.motherboard.insert({name:'MSI B150I GAMING PRO',socket:'1151',form:'Mini itx'
 db.motherboard.insert({name:'Asus P9D WS',socket:'1150',form:'Full ATX',tdp:80,ram_slots:4,ram_max:32,price:238.98})
 db.motherboard.insert({name:'Gigabyte GA-970A-D3',socket:'AM3+',form:'Full ATX',tdp:80,ram_slots:4,ram_max:32,price:98.98})
 db.motherboard.insert({name:'Gigabyte GA-F2A78M-HD2',socket:'FM2+',form:'Micro ATX',tdp:45,ram_slots:2,ram_max:64,price:62.03})
-db.motherboard.insert({name:'ASRock H81TM-ITX R2.0',socket:'1150',form:'Thin Mini ITX',ram_slots:2,ram_max:16,price:67.88})
+db.motherboard.insert({name:'ASRock H81TM-ITX R2.0',socket:'1150',form:'Mini ITX',tdp:25,ram_slots:2,ram_max:16,price:67.88})
 db.motherboard.insert({name:'Supermicro MBD-X11SSM-F-O',socket:'1151',form:'Micro ATX',tdp:45,ram_slots:4,ram_max:64,price:186.98})
 db.motherboard.insert({name:'Asus PRIME B250M-C-CSM',socket:'1151',form:'Micro ATX',tdp:45,ram_slots:4,ram_max:64,price:80.00})
 db.motherboard.insert({name:'ASRock Z170A-X1/3.1',socket:'1151',form:'Full ATX',tdp:80,ram_slots:4,ram_max:64,price:87.98})

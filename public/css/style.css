@@ -75,7 +75,8 @@
 	}
 
 	#text-area>p,#warning { 
-		font-size: 55px !important; margin-top:100px;
+		font-size: 55px !important; 
+		margin-top:100px;
 	}
 
 	#btn-start,.Siguiente,#btn-save,#select-accept{ 
@@ -351,14 +352,8 @@ h2,p{
 	margin-top:5%;	
 }
 
-footer{
-	text-align:center;
-	font-size: 16px;
-	background-color: #000;
-	color:#FFF;
-    width: 100%;
-    position:relative;
-    z-index: 823452374574;
+#warning{
+	color:red;
 }
 
 .computer-list{
@@ -439,4 +434,14 @@ footer{
 #msg-failure{
 	color:#FE0000;
 	text-align: center;
+}
+
+footer{
+	text-align:center;
+	font-size: 16px;
+	background-color: #000;
+	color:#FFF;
+    width: 100%;
+    position:relative;
+    z-index: 823452374574;
 }

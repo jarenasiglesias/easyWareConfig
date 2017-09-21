@@ -58,6 +58,16 @@ function selector() { //función encargada de hacer una selección en los compon
             } else {
                 printComponents(compAttr, 'ddr4');
             }
+
+        } else if (compAttr === 'CASE') {
+            if(moboStore[2] === 'Full ATX'){
+                printComponents(compAttr, 'fullatx');
+            }else if(moboStore[2] === 'Micro ATX'){
+                printComponents(compAttr, 'microatx');
+            }else if(moboStore[2] === 'Mini itx'){
+                printComponents(compAttr, 'miniitx');
+            }
+
         } else {
             printComponents(compAttr, '');
         }
@@ -84,7 +94,7 @@ function selector() { //función encargada de hacer una selección en los compon
     }
 }
 
-function printComponents(component, brand) { //función encargada de contruir la tabla html que muestra los resultados obtenidos de la base de datos
+function printComponents(component, type) { //función encargada de contruir la tabla html que muestra los resultados obtenidos de la base de datos
     textArea.empty();
 
     var tableArea = $('#table-area');
@@ -95,7 +105,7 @@ function printComponents(component, brand) { //función encargada de contruir la
     var tableComponentBody = $('<tbody></tbody>');
     tableArea.append(tableComponentBody);
 
-    tableBodyBuilder(tableArea, component, brand, tableComponentBody);  //llama a una función que crea el cuerpo de la tabla
+    tableBodyBuilder(tableArea, component, type, tableComponentBody);  //llama a una función que crea el cuerpo de la tabla
 };
 
 function tableHeadBuilder(tableArea, component, tableComponentBody) {
@@ -104,7 +114,7 @@ function tableHeadBuilder(tableArea, component, tableComponentBody) {
     if (component === 'CPU') { //según el tipo de componente crea una cabecera u otra, ya que tienen diferentes propiedades
         optColum = '<th> Socket ▼ </th>' + '<th> Núcleos ▼ </th>' + '<th> Hilos ▼ </th>' + '<th> Frec ▼ </th>';
     } else if (component === 'motherboard') {
-        optColum = '<th> Socket ▼ </th>';
+        optColum = '<th> Socket ▼ </th> + <th> Formato ▼ </th>';
     } else if (component === 'GPU') {
         optColum = '<th> Frec GPU ▼ </th>' + '<th> GPU Turbo ▼ </th>' + '<th> Memoria ▼ </th>' + '<th> Frec Mem ▼ </th>' + '<th> Mem Turbo ▼ </th>';
     } else if (component === 'RAM') {
@@ -114,7 +124,7 @@ function tableHeadBuilder(tableArea, component, tableComponentBody) {
     } else if (component === 'PSU') {
         optColum2 = 'Capacidad';
         optColum = '<th> Eficiencia ▼ </th>';
-    } else {
+    } else if (component === 'CASE'){
         optColum2 = 'Tamaño de caja';
     }
 
@@ -122,8 +132,8 @@ function tableHeadBuilder(tableArea, component, tableComponentBody) {
     tableArea.append(headRow);
 }
 
-function tableBodyBuilder(tableArea, component, brand, tableComponentBody) { //esta función construye el cuerpo de la tabla obteniendo los datos de MongoDB
-    $.get('http://localhost:3000/' + component + '/' + brand, function getType(response) {
+function tableBodyBuilder(tableArea, component, type, tableComponentBody) { //esta función construye el cuerpo de la tabla obteniendo los datos de MongoDB
+    $.get('http://localhost:3000/' + component + '/' + type, function getType(response) {
         var compObj = response;
 
         for (var i = 0; i < compObj.length; i++) {
@@ -144,7 +154,8 @@ function tableBodyBuilder(tableArea, component, brand, tableComponentBody) { //e
                 optProp = '<td id="socket">' + socket + '</td>' + '<td id="cpu-core">' + cpuCore + '</td>' + '<td id="cpu-thread">' + cpuThread + '</td>' + '<td id="cpu-freq">' + cpuClock + '</td>';
             } else if (component === 'motherboard') {
                 var socket = compObj[i].socket;
-                optProp = '<td id="socket">' + socket + '</td>';
+                var formatType = compObj[i].form;
+                optProp = '<td id="socket">' + socket + '</td>' + '<td id="format-mb">' + formatType + '</td>';
             } else if (component === 'GPU') {
                 var gpuClock = compObj[i].gpu_clock;
                 var gpuBoost = compObj[i].gpu_boost;
@@ -239,7 +250,7 @@ function nextStep() { //función que introduce los valores sacados de los compon
         }
 
         component = 'PSU';
-        text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<h2 id="warning">' + 'Consumo aproximado: ' + calculator('watts') + 'W</h2>';
+        text = '<p>A la hora de seleccionar la fuente de alimentación debes tener en cuenta cuál será el consumo aproximado de tu configuración, para ello te lo facilitamos aquí abajo.</p> <p> También recomendamos escoger una fuente con certificación si vas a montar un equipo de alto rendimiento, ya que las que no poseen certificación pueden acarrear problemas de tensión y quemar nuestro pc.</p>' + '<h2 id="warning">' + '¡ATENTO! Consumo aproximado: ' + calculator('watts') + 'W</h2>';
         steps(component, text);
 
     } else if (componentType === 'PSU') {
@@ -265,25 +276,25 @@ function nextStep() { //función que introduce los valores sacados de los compon
 
 function calculator(type) {
 
-    var cpuCal, moboCal, ramCal, gpuCal, hddCal, caseCal;
+    var cpuCal, moboCal, ramCal, gpuCal, hddCal, optCal;
 
     if (type === 'watts') {
         cpuCal = parseFloat(cpuStore[5]);
-        moboCal = parseFloat(moboStore[2]);
+        moboCal = parseFloat(moboStore[3]);
         ramCal = parseFloat(ramStore[5]);
         gpuCal = parseFloat(gpuStore[6]);
         hddCal = parseFloat(hddStore[4]);
-        caseCal = 0;
+        optCal = 50; //esta variable se suma al wattage para tener un margen entre el tope de la fuente y lo que consume el pc ya que una fuente no da el wattage que indica al 100% de eficacia 
     } else if (type === 'price') {
         cpuCal = parseFloat(cpuStore[6]);
         moboCal = parseFloat(moboStore[3]);
         ramCal = parseFloat(ramStore[6]);
         gpuCal = parseFloat(gpuStore[7]);
         hddCal = parseFloat(hddStore[5]);
-        caseCal = parseFloat(caseStore[2])
+        optCal = parseFloat(caseStore[2]) //esta variable suma el precio de la caja
     }
 
-    var total = cpuCal + moboCal + ramCal + gpuCal + hddCal + caseCal;
+    var total = cpuCal + moboCal + ramCal + gpuCal + hddCal + optCal;
 
     return total;
 }
